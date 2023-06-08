@@ -43,7 +43,8 @@ public class Driver {
          socket = new Socket(host, port);
       } catch (IOException e) {
         view.showError("There was an issue with generating a socket.");
-        System.exit(1);
+        throw new RuntimeException(e);
+        //System.exit(1);
       }
       Player player = new AiPlayer(new Board(), new Board(), new PlayerUnsunkShips());
       controller = new ProxyController(socket, player);
