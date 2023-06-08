@@ -122,7 +122,7 @@ class ControllerTest {
         0 0 0 0 0 0
         0 0 0 0 0 0
         0 0 0 0 0 0
-                
+
         Your Board:
         D 0 0 C 0 0
         D 0 B C 0 0
@@ -130,7 +130,7 @@ class ControllerTest {
         D S B C 0 0
         0 S B C 0 0
         0 0 B C 0 0
-                
+
         Please Enter 4 Shots:
         ------------------------------------------------------
         Opponent Board Data:
@@ -140,7 +140,7 @@ class ControllerTest {
         0 0 0 0 0 0
         H 0 0 0 0 0
         0 0 0 0 0 0
-                
+
         Your Board:
         D 0 0 C M 0
         D 0 B C 0 0
@@ -148,7 +148,7 @@ class ControllerTest {
         D S B H 0 M
         0 S B C 0 0
         0 0 B C 0 0
-                
+
         Please Enter 4 Shots:
         ------------------------------------------------------
         Opponent Board Data:
@@ -158,7 +158,7 @@ class ControllerTest {
         0 0 0 0 0 0
         H H H H 0 0
         0 0 0 0 0 0
-                
+
         Your Board:
         D 0 M C M 0
         D 0 B C 0 0
@@ -166,7 +166,7 @@ class ControllerTest {
         D S B H 0 M
         0 H B C 0 M
         0 0 B C 0 0
-                
+
         Please Enter 4 Shots:
         ------------------------------------------------------
         Opponent Board Data:
@@ -176,7 +176,7 @@ class ControllerTest {
         0 0 0 0 0 0
         H H H H 0 0
         0 0 0 0 0 0
-                
+
         Your Board:
         D 0 M C M 0
         D 0 B C M 0
@@ -184,7 +184,7 @@ class ControllerTest {
         D S H H 0 M
         0 H B C 0 M
         0 0 B C 0 0
-                
+
         Please Enter 4 Shots:
         ------------------------------------------------------
         Opponent Board Data:
@@ -194,7 +194,7 @@ class ControllerTest {
         H H H H 0 0
         H H H H 0 0
         0 0 0 0 0 0
-                
+
         Your Board:
         D 0 M C M 0
         D 0 B C M 0
@@ -202,10 +202,10 @@ class ControllerTest {
         D S H H 0 M
         0 H B C 0 M
         0 M B C 0 0
-                
+
         Please Enter 4 Shots:
         ------------------------------------------------------
-        The game results in a WIN
+        You WIN!
         """;
   }
 
@@ -291,7 +291,7 @@ class ControllerTest {
     controller = new ControllerImpl(new TerminalView(output, lostInput), 1);
     controller.run();
     String sb = output.toString();
-    assertEquals("The game results in a LOSS\n", sb.substring(sb.indexOf("The game results in a ")));
+    assertEquals("You LOSE!\n", sb.substring(sb.indexOf("You ")));
   }
 
 

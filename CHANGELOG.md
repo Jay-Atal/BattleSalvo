@@ -7,3 +7,7 @@
 - Now has empty constructor to set the array to null.
 ## Generic Player
 - Now handles if a boards array is null and assigns values to it in setup.
+## View
+- Game results changed so the message had to change for grammar.
+## Tests
+- Relied on the game message so they were also updated.

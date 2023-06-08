@@ -102,6 +102,6 @@ public class TerminalView implements View {
 
   @Override
   public void showResult(GameResult gameResult) {
-    showOutput("The game results in a " + gameResult);
+    showOutput("You " + gameResult + "!");
   }
 }

@@ -37,13 +37,11 @@ public class ControllerImpl implements Controller {
     this.view = view;
     player1UnsunkShips = new PlayerUnsunkShips();
     player2UnsunkShips = new PlayerUnsunkShips();
-    getInputs();
   }
 
   public ControllerImpl(View view, Integer seed) {
     this(view);
     this.seed = seed;
-    getInputs();
   }
 
   /**
@@ -87,6 +85,7 @@ public class ControllerImpl implements Controller {
 
   @Override
   public void run() {
+    getInputs();
     setUpPlayers();
 
     player1.setup(height, width, specifications);

@@ -77,7 +77,7 @@ class TerminalViewTest {
         X X X X X X
         X X X X X X
         X X X X X X
-                
+
         """;
     assertEquals(expectedOutput, output.toString());
   }
@@ -114,7 +114,7 @@ class TerminalViewTest {
 
   @Test
   void showResult() {
-    String result = "The game results in a " + GameResult.WIN;
+    String result = "You " + GameResult.WIN + "!";
     view.showResult(GameResult.WIN);
     assertEquals(result + "\n", output.toString());
   }

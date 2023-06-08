@@ -182,4 +182,4 @@ D S H H 0 M
 
 Please Enter 4 Shots:
 ------------------------------------------------------
-The game results in a WIN
+You WIN!
