@@ -1,8 +1,11 @@
 package cs3500.pa03.controller;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import cs3500.pa03.model.Player;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintStream;
 import java.net.Socket;
 import json.MessageJson;
@@ -13,12 +16,15 @@ public class ProxyController implements Controller {
   private final Player player;
 
   private final PrintStream out;
+  private InputStream in;
+  private final ObjectMapper mapper = new ObjectMapper();
 
   public ProxyController(Socket server, Player player) {
     this.server = server;
     this.player = player;
     try {
       out = new PrintStream(server.getOutputStream());
+      in = server.getInputStream();
     } catch (IOException e) {
       throw new RuntimeException(e);
       //TODO: Add custom message or handle "gracefully"
@@ -32,7 +38,14 @@ public class ProxyController implements Controller {
 //      join();
 //    }
     //TODO: Add if else-if else statement to call the 6 JSON Message formats.
-    //if("join".equals())
+    switch (methodName) {
+      case "join" -> join();
+      case "setup" -> setup();
+      case "take-shots" -> takeShots();
+      case "report-damage" -> reportDamage();
+      case "successful-hits" -> successfulHits();
+      case "end-game" -> endGame();
+    }
   }
 
   /**
@@ -40,13 +53,25 @@ public class ProxyController implements Controller {
    */
   @Override
   public void run() {
-
+    System.out.println("BeforeTry");
+    try {
+      JsonParser parser = this.mapper.getFactory().createParser(this.in);
+      System.out.println("Try");
+      while (!this.server.isClosed()) {
+        System.out.println("Server not closed");
+        MessageJson message = parser.readValueAs(MessageJson.class);
+        System.out.println(message);
+        delegateMessage(message);
+      }
+      System.out.println("server closed");
+    } catch (IOException e) {
+      // Disconnected from server or parsing exception
+      // TODO??
+    }
   }
 
   public void join() {
-    out.println("""
-        
-        """);
+
   }
 
   public void setup() {
@@ -68,5 +93,4 @@ public class ProxyController implements Controller {
   public void endGame() {
 
   }
-
 }
