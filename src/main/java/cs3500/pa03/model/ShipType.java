@@ -1,13 +1,15 @@
 package cs3500.pa03.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Represents a ship type.
  */
 public enum ShipType {
-  Carrier(6, 'C'),
-  Battleship(5, 'B'),
-  Destroyer(4, 'D'),
-  Submarine(3, 'S');
+  @JsonProperty("CARRIER") Carrier(6, 'C'),
+  @JsonProperty("BATTLESHIP") Battleship(5, 'B'),
+  @JsonProperty("DESTROYER") Destroyer(4, 'D'),
+  @JsonProperty("SUBMARINE") Submarine(3, 'S');
 
   private final int size;
   private final char startLetter;
