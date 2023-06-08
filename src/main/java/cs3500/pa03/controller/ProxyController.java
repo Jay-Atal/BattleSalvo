@@ -28,7 +28,9 @@ public class ProxyController implements Controller {
   public void delegateMessage(MessageJson message) {
     String methodName = message.methodName();
     JsonNode arguments = message.arguments();
-
+//    if(methodName.equals("join")) {
+//      join();
+//    }
     //TODO: Add if else-if else statement to call the 6 JSON Message formats.
     //if("join".equals())
   }
