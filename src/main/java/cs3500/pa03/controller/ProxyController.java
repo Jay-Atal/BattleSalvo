@@ -40,11 +40,11 @@ public class ProxyController implements Controller {
     //TODO: Add if else-if else statement to call the 6 JSON Message formats.
     switch (methodName) {
       case "join" -> join();
-      case "setup" -> setup();
+      case "setup" -> setup(arguments);
       case "take-shots" -> takeShots();
-      case "report-damage" -> reportDamage();
-      case "successful-hits" -> successfulHits();
-      case "end-game" -> endGame();
+      case "report-damage" -> reportDamage(arguments);
+      case "successful-hits" -> successfulHits(arguments);
+      case "end-game" -> endGame(arguments);
     }
   }
 
@@ -74,7 +74,7 @@ public class ProxyController implements Controller {
 
   }
 
-  public void setup() {
+  public void setup(JsonNode arguments) {
 
   }
 
@@ -82,15 +82,15 @@ public class ProxyController implements Controller {
 
   }
 
-  public void reportDamage() {
+  public void reportDamage(JsonNode arguments) {
 
   }
 
-  public void successfulHits() {
+  public void successfulHits(JsonNode arguments) {
 
   }
 
-  public void endGame() {
+  public void endGame(JsonNode arguments) {
 
   }
 }
