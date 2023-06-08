@@ -2,6 +2,7 @@ package cs3500.pa03.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 
@@ -24,11 +25,7 @@ public class AiPlayer extends GenericPlayer {
                   Integer seed) {
     super(playerBoard, opponentBoard, seed, playerUnsunkShips);
     validMoves = new ArrayList<>();
-    for (int r = 0; r < opponentBoard.board.length; r++) {
-      for (int c = 0; c < opponentBoard.board[0].length; c++) {
-        validMoves.add(new Coord(c, r));
-      }
-    }
+
   }
 
   /**
@@ -41,12 +38,17 @@ public class AiPlayer extends GenericPlayer {
   public AiPlayer(Board playerBoard, Board opponentBoard, PlayerUnsunkShips playerUnsunkShips) {
     super(playerBoard, opponentBoard, playerUnsunkShips);
     validMoves = new ArrayList<>();
+  }
+
+  @Override
+  public List<Ship> setup(int height, int width, Map<ShipType, Integer> specifications) {
+    List<Ship> toReturn  = super.setup(height, width, specifications);
     for (int r = 0; r < opponentBoard.board.length; r++) {
       for (int c = 0; c < opponentBoard.board[0].length; c++) {
         validMoves.add(new Coord(c, r));
       }
     }
-    seed = null;
+    return toReturn;
   }
 
 

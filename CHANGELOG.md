@@ -11,3 +11,6 @@
 - Game results changed so the message had to change for grammar.
 ## Tests
 - Relied on the game message so they were also updated.
+## AiPlayer
+- Changed constructor to get rid of board array set up.
+- modified and added a setup method that calls the super and then modifies the board array.
