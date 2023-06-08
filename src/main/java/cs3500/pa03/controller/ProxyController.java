@@ -3,12 +3,14 @@ package cs3500.pa03.controller;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import cs3500.pa03.json.JoinJson;
 import cs3500.pa03.model.Player;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.net.Socket;
-import json.MessageJson;
+import cs3500.pa03.json.JsonUtils;
+import cs3500.pa03.json.MessageJson;
 
 public class ProxyController implements Controller {
 
@@ -70,8 +72,16 @@ public class ProxyController implements Controller {
     }
   }
 
-  public void join() {
+  private void sentToServer(MessageJson response){
+    JsonNode toPrint = JsonUtils.serializeRecord(response);
+    out.println(toPrint);
+  }
 
+  public void join() {
+    Record joinJson = new JoinJson("Jay-Atal", "SINGLE");
+    JsonNode returnArgs = JsonUtils.serializeRecord(joinJson);
+    MessageJson response = new MessageJson("join", returnArgs);
+    sentToServer(response);
   }
 
   public void setup(JsonNode arguments) {

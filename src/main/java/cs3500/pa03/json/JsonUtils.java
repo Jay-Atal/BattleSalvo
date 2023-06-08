@@ -1,4 +1,4 @@
-package json;
+package cs3500.pa03.json;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
