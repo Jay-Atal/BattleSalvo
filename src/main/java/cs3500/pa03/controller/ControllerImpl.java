@@ -27,16 +27,23 @@ public class ControllerImpl implements Controller {
   private Board opponentBoard;
 
   private Integer seed;
+  private PlayerUnsunkShips player1UnsunkShips;
+  private PlayerUnsunkShips player2UnsunkShips;
 
+  private Player player1;
+  private Player player2;
 
   public ControllerImpl(View view) {
     this.view = view;
-
+    player1UnsunkShips = new PlayerUnsunkShips();
+    player2UnsunkShips = new PlayerUnsunkShips();
+    getInputs();
   }
 
   public ControllerImpl(View view, Integer seed) {
-    this.view = view;
+    this(view);
     this.seed = seed;
+    getInputs();
   }
 
   /**
@@ -64,15 +71,8 @@ public class ControllerImpl implements Controller {
     this.specifications = getSpecifications();
   }
 
-  @Override
-  public void run() {
-    getInputs();
+  public void setUpPlayers() {
 
-
-    PlayerUnsunkShips player1UnsunkShips = new PlayerUnsunkShips();
-    PlayerUnsunkShips player2UnsunkShips = new PlayerUnsunkShips();
-    Player player1;
-    Player player2;
     if (seed != null) {
       player1 = new HumanPlayer(playerBoard, opponentBoard, view, player1UnsunkShips, seed);
       player2 =
@@ -83,7 +83,11 @@ public class ControllerImpl implements Controller {
       player2 =
           new AiPlayer(new Board(height, width), new Board(height, width), player2UnsunkShips);
     }
+  }
 
+  @Override
+  public void run() {
+    setUpPlayers();
 
     player1.setup(height, width, specifications);
     player2.setup(height, width, specifications);
@@ -106,11 +110,11 @@ public class ControllerImpl implements Controller {
 
       if (player1UnsunkShipsList.size() == 0 || player2UnsunkShipsList.size() == 0) {
         if (player1UnsunkShipsList.size() == 0 && player2UnsunkShipsList.size() == 0) {
-          view.showResult(GameResult.TIE);
+          view.showResult(GameResult.DRAW);
           break;
         }
         if (player1UnsunkShipsList.size() == 0) {
-          view.showResult(GameResult.LOSS);
+          view.showResult(GameResult.LOSE);
         } else {
           view.showResult(GameResult.WIN);
         }

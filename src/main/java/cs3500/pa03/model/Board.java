@@ -21,6 +21,10 @@ public class Board {
     }
   }
 
+  public Board() {
+    board = null;
+  }
+
   /**
    *
    * @return a array representing the board with chars of the starting letter of the cell condition.

@@ -56,6 +56,11 @@ public abstract class GenericPlayer implements Player {
   public List<Ship> setup(int height, int width, Map<ShipType, Integer> specifications) {
     List<ShipType> shipTypes = new ArrayList<>();
 
+    if (playerBoard.board == null) {
+        playerBoard = new Board(height, width);
+        opponentBoard = new Board(height, width);
+    }
+
     for (ShipType shipType : ShipType.values()) {
       addShipTypes(shipTypes, shipType, specifications.get(shipType));
     }
