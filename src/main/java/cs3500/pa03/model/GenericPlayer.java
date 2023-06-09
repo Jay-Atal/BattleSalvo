@@ -18,6 +18,7 @@ public abstract class GenericPlayer implements Player {
   protected PlayerUnsunkShips unsunkShips;
   protected Integer seed;
   private final Random random;
+  protected List<ShipType> shipTypes;
 
   /**
    * Constructor to make the Generic Player.
@@ -54,7 +55,7 @@ public abstract class GenericPlayer implements Player {
 
   @Override
   public List<Ship> setup(int height, int width, Map<ShipType, Integer> specifications) {
-    List<ShipType> shipTypes = new ArrayList<>();
+     shipTypes = new ArrayList<>();
 
     if (playerBoard.board == null) {
         playerBoard = new Board(height, width);
@@ -152,7 +153,7 @@ public abstract class GenericPlayer implements Player {
 
   }
 
-  private boolean isValidSpot(Ship ship) {
+  protected boolean isValidSpot(Ship ship) {
 
     Coord coord = ship.coord();
     ShipType shipType = ship.shipType();

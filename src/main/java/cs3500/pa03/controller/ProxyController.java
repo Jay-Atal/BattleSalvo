@@ -56,6 +56,7 @@ public class ProxyController implements Controller {
       case "report-damage" -> reportDamage(arguments);
       case "successful-hits" -> successfulHits(arguments);
       case "end-game" -> endGame(arguments);
+      //TODO: Add Default
     }
   }
 
@@ -80,7 +81,6 @@ public class ProxyController implements Controller {
   private void sentToServer(String methodName, Record record) {
     JsonNode arguments = JsonUtils.serializeRecord(record);
     MessageJson response = new MessageJson(methodName, arguments);
-
     JsonNode toPrint = JsonUtils.serializeRecord(response);
     System.out.println("Response: " + toPrint);
     out.println(toPrint);

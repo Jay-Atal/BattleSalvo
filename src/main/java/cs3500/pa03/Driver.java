@@ -4,6 +4,7 @@ import cs3500.pa03.controller.Controller;
 import cs3500.pa03.controller.ControllerImpl;
 import cs3500.pa03.controller.ProxyController;
 import cs3500.pa03.model.AiPlayer;
+import cs3500.pa03.model.AiPlayer2;
 import cs3500.pa03.model.Board;
 import cs3500.pa03.model.Player;
 import cs3500.pa03.model.PlayerUnsunkShips;
@@ -46,7 +47,7 @@ public class Driver {
         throw new RuntimeException(e);
         //System.exit(1);
       }
-      Player player = new AiPlayer(new Board(), new Board(), new PlayerUnsunkShips());
+      Player player = new AiPlayer2(new Board(), new Board(), new PlayerUnsunkShips());
       controller = new ProxyController(socket, player);
 
     } else  {

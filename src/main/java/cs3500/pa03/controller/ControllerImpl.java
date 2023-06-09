@@ -27,9 +27,8 @@ public class ControllerImpl implements Controller {
   private Board opponentBoard;
 
   private Integer seed;
-  private PlayerUnsunkShips player1UnsunkShips;
-  private PlayerUnsunkShips player2UnsunkShips;
-
+  private final PlayerUnsunkShips player1UnsunkShips;
+  private final PlayerUnsunkShips player2UnsunkShips;
   private Player player1;
   private Player player2;
 
@@ -55,7 +54,7 @@ public class ControllerImpl implements Controller {
     HeightWidth heightWidth = getHeightWidth();
 
     height = heightWidth.height();
-    width = heightWidth.height();
+    width = heightWidth.width();
 
     playerBoard = new Board(height, width);
     opponentBoard = new Board(height, width);
