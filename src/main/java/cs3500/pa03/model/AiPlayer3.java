@@ -107,6 +107,16 @@ public class AiPlayer3 extends GenericPlayer {
     return "AI-Player";
   }
 
+
+
+  public void successfulHits(List<Coord> shotsThatHitOpponentShips) {
+    super.successfulHits(shotsThatHitOpponentShips);
+    for(Coord shot: shotsThatHitOpponentShips) {
+      hitCells.push(shot);
+    }
+  }
+
+
   /**
    * Returns this player's shots on the opponent's board. The number of shots returned should
    * equal the number of ships on this player's board that have not sunk.
@@ -114,40 +124,6 @@ public class AiPlayer3 extends GenericPlayer {
    * @return the locations of shots on the opponent's board
    */
   @Override
-//  public List<Coord> takeShots() {
-//    updateShips();
-//    Random random = (Objects.equals(seed, null)) ? new Random() : new Random(seed);
-//    List<Coord> shots = new ArrayList<>();
-//    for (int i = 0; i < ships.size(); i++) {
-//      int randomIndex = random.nextInt(0, validMoves.size());
-//      shots.add(validMoves.remove(randomIndex));
-//    }
-//
-//    lastShots = shots;
-//    updateShips();
-//    unsunkShips.clear();
-//    unsunkShips.addAll(ships);
-//    return shots;
-//  }
-//
-
-  public void successfulHits(List<Coord> shotsThatHitOpponentShips) {
-    super.successfulHits(shotsThatHitOpponentShips);
-    for(Coord shot: shotsThatHitOpponentShips) {
-      hitCells.push(shot);
-    }
-//    for (Coord shot : shotsThatHitOpponentShips) {
-//      for (int i = validMoves.size() - 1; i > 0; i--) {
-//        Coord move = validMoves.get(i);
-//        if (move.equals(shot)) {
-//          validMoves.remove(i);
-//        }
-//      }
-//    }
-  }
-
-
-
   public List<Coord> takeShots() {
     updateShips();
     List<Coord> shots = new ArrayList<>();
