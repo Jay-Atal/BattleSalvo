@@ -125,6 +125,11 @@ public class ControllerImpl implements Controller {
 
   }
 
+  @Override
+  public int win() {
+    return 0;
+  }
+
   private HeightWidth getHeightWidth() {
     String standardError = "Uh Oh! You've entered invalid dimensions.\n";
     String outOfRangeError =

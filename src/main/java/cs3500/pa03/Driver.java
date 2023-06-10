@@ -5,6 +5,7 @@ import cs3500.pa03.controller.ControllerImpl;
 import cs3500.pa03.controller.ProxyController;
 import cs3500.pa03.model.AiPlayer;
 import cs3500.pa03.model.AiPlayer2;
+import cs3500.pa03.model.AiPlayer3;
 import cs3500.pa03.model.Board;
 import cs3500.pa03.model.Player;
 import cs3500.pa03.model.PlayerUnsunkShips;
@@ -47,7 +48,7 @@ public class Driver {
         throw new RuntimeException(e);
         //System.exit(1);
       }
-      Player player = new AiPlayer2(new Board(), new Board(), new PlayerUnsunkShips());
+      Player player = new AiPlayer3(new Board() ,new Board(), new PlayerUnsunkShips());
       controller = new ProxyController(socket, player);
 
     } else  {
@@ -55,6 +56,10 @@ public class Driver {
       System.exit(1);
     }
 
-    controller.run();
+    for(int i = 0; i < 1000; i++) {
+      controller.run();
+    }
+    System.out.println(controller.win());
+
   }
 }

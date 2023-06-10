@@ -3,11 +3,13 @@ package cs3500.pa03.controller;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import cs3500.pa03.json.EndGameRequestJson;
 import cs3500.pa03.json.FleetJson;
 import cs3500.pa03.json.JoinJson;
 import cs3500.pa03.json.SetupRequestJson;
 import cs3500.pa03.json.ShipAdapterJSON;
 import cs3500.pa03.json.VolleyJSON;
+import cs3500.pa03.model.GameResult;
 import cs3500.pa03.model.Player;
 import cs3500.pa03.model.Ship;
 import cs3500.pa03.model.ShipType;
@@ -29,6 +31,8 @@ public class ProxyController implements Controller {
   private final PrintStream out;
   private InputStream in;
   private final ObjectMapper mapper = new ObjectMapper();
+
+  private int wins = 0;
 
   public ProxyController(Socket server, Player player) {
     this.server = server;
@@ -69,7 +73,7 @@ public class ProxyController implements Controller {
       JsonParser parser = this.mapper.getFactory().createParser(this.in);
       while (!this.server.isClosed()) {
         MessageJson message = parser.readValueAs(MessageJson.class);
-        System.out.println(message);
+        //System.out.println(message);
         delegateMessage(message);
       }
     } catch (IOException e) {
@@ -78,11 +82,16 @@ public class ProxyController implements Controller {
     }
   }
 
+  @Override
+  public int win() {
+    return wins;
+  }
+
   private void sentToServer(String methodName, Record record) {
     JsonNode arguments = JsonUtils.serializeRecord(record);
     MessageJson response = new MessageJson(methodName, arguments);
     JsonNode toPrint = JsonUtils.serializeRecord(response);
-    System.out.println("Response: " + toPrint);
+    //System.out.println("Response: " + toPrint);
     out.println(toPrint);
   }
 
@@ -129,7 +138,11 @@ public class ProxyController implements Controller {
   }
 
   public void endGame(JsonNode arguments) {
-
+    EndGameRequestJson input = this.mapper.convertValue(arguments, EndGameRequestJson.class);
+    if(input.gameResult().equals(GameResult.WIN)) {
+      wins++;
+    }
+    player.endGame(input.gameResult(), input.reason());
   }
 //
 //  methodName=setup,arguments=
