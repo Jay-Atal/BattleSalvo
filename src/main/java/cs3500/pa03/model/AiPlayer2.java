@@ -21,7 +21,6 @@ public class AiPlayer2 extends GenericPlayer {
    * @param playerBoard       the player's board.
    * @param opponentBoard     the player's representation of the opponent's board.
    * @param playerUnsunkShips the object for keeping track of unsunk ships.
-   * @param seed              used for testing purposes to give consitanty "random" placements.
    */
   public AiPlayer2(Board playerBoard, Board opponentBoard, PlayerUnsunkShips playerUnsunkShips) {
     super(playerBoard, opponentBoard, playerUnsunkShips);
@@ -35,9 +34,10 @@ public class AiPlayer2 extends GenericPlayer {
    * @param playerBoard       the player's board.
    * @param opponentBoard     the player's representation of the opponent's board.
    * @param playerUnsunkShips the object for keeping track of unsunk ships.
+   * @param seed              used for testing purposes to give consitanty "random" placements.
    */
   public AiPlayer2(Board playerBoard, Board opponentBoard, PlayerUnsunkShips playerUnsunkShips,
-                  Integer seed) {
+                   Integer seed) {
     super(playerBoard, opponentBoard, seed, playerUnsunkShips);
     validMoves = new ArrayList<>();
     hitCells = new Stack<>();
@@ -76,11 +76,11 @@ public class AiPlayer2 extends GenericPlayer {
         neighbords[1] = new Coord(current.x() + 1, current.y());
         neighbords[2] = new Coord(current.x(), current.y() - 1);
         neighbords[3] = new Coord(current.x(), current.y() + 1);
-        if(shots.size() == ships.size()){
+        if (shots.size() == ships.size()) {
           return shots;
         }
-        for(int j = 0; j < 4; j++) {
-          if(isValidSpot(neighbords[i])) {
+        for (int j = 0; j < 4; j++) {
+          if (isValidSpot(neighbords[i])) {
             validMoves.remove(neighbords[i]);
             shots.add(neighbords[i]);
           }
