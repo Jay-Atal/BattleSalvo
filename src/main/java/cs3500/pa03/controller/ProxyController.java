@@ -49,10 +49,6 @@ public class ProxyController implements Controller {
   public void delegateMessage(MessageJson message) {
     String methodName = message.methodName();
     JsonNode arguments = message.arguments();
-//    if(methodName.equals("join")) {
-//      join();
-//    }
-    //TODO: Add if else-if else statement to call the 6 JSON Message formats.
     switch (methodName) {
       case "join" -> join();
       case "setup" -> setup(arguments);
@@ -79,12 +75,8 @@ public class ProxyController implements Controller {
     } catch (IOException e) {
       // Disconnected from server or parsing exception
       // TODO??
+      e.printStackTrace();
     }
-  }
-
-  @Override
-  public int win() {
-    return wins;
   }
 
   private void sentToServer(String methodName, Record record) {

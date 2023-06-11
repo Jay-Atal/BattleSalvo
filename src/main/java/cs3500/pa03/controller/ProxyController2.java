@@ -84,7 +84,6 @@ public class ProxyController2 implements Controller {
     }
   }
 
-  @Override
   public int win() {
     return wins;
   }

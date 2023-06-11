@@ -109,10 +109,8 @@ public class Driver2 {
       height = randomSetup[1];
       Board playerBoard = new Board(height, width);
       Board opponentBoard = new Board(height, width);
-      Player player1 =
-          new AiStackPlayer(playerBoard, opponentBoard, playerUnsunkShips1);
-      Player player2 =
-          new AiRandomPlayer(new Board(height, width), new Board(height, width), playerUnsunkShips2);
+      Player player1 = new AiMapPlayer(playerBoard, opponentBoard, playerUnsunkShips1);
+      Player player2 = new AiStackPlayer(new Board(height, width), new Board(height, width), playerUnsunkShips2);
       int shipUpper = Math.min(height, width) - 4;
       Map<ShipType, Integer> specifications = new HashMap<>();
 
