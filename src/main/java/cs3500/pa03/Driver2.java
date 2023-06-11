@@ -2,6 +2,8 @@ package cs3500.pa03;
 
 import cs3500.pa03.controller.Controller;
 import cs3500.pa03.controller.ControllerImpl;
+import cs3500.pa03.controller.ControllerImpl2;
+import cs3500.pa03.model.AiMapPlayer;
 import cs3500.pa03.model.AiRandomPlayer;
 import cs3500.pa03.model.AiStackPlayer;
 import cs3500.pa03.model.Board;
@@ -29,7 +31,7 @@ public class Driver2 {
   public static void main(String[] args) {
 
     View view = new TerminalView(System.out);
-    Controller controller = null;
+    ControllerImpl2 controller = null;
 
 //    if (args.length == 0) {
 //      Random random = new Random();
@@ -129,7 +131,7 @@ public class Driver2 {
       //shipAmount = random.nextInt(shipUpper) + 1;
       specifications.put(ShipType.Submarine, randomSetup[5]);
 
-      controller = new ControllerImpl(view, player1, player2, specifications, height, width, playerUnsunkShips1, playerUnsunkShips2, playerBoard, opponentBoard);
+      controller = new ControllerImpl2(view, player1, player2, specifications, height, width, playerUnsunkShips1, playerUnsunkShips2, playerBoard, opponentBoard);
       controller.run();
       wins+=controller.win();
     }

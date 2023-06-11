@@ -224,7 +224,8 @@ public abstract class GenericPlayer implements Player {
         return false;
       }
       Condition cellCondition = cell.getCondition();
-      if (cellCondition.equals(Condition.SHIP)) {
+      if (cellCondition.equals(
+          Condition.MISS) || cellCondition.equals(Condition.SHIP)) { //cellCondition.equals(Condition.HIT) previous condition
         return false;
       }
     }
@@ -279,7 +280,7 @@ public abstract class GenericPlayer implements Player {
 //      opponentBoard.board[shot.y()][shot.x()] =
 //          new Cell(shot, (isValidShot) ? Condition.HIT : Condition.MISS);
 //    }
-    for(Coord shot: shotsThatHitOpponentShips) {
+    for (Coord shot : shotsThatHitOpponentShips) {
       opponentBoard.board[shot.y()][shot.x()] = new Cell(shot, Condition.HIT);
     }
     updateShips();

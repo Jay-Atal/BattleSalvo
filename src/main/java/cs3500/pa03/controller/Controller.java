@@ -8,5 +8,4 @@ public interface Controller {
    * Runs the program.
    */
   void run();
-   int win();
 }

@@ -18,7 +18,7 @@ import java.util.NoSuchElementException;
 /**
  * The implementation of the Battle Salvo Controller.
  */
-public class ControllerImpl implements Controller {
+public class ControllerImpl2 implements Controller {
   private View view;
   private int height;
   private int width;
@@ -34,22 +34,22 @@ public class ControllerImpl implements Controller {
   private Player player2 = null;
   private int win = 0;
 
-  private ControllerImpl() {
+  private ControllerImpl2() {
     player1UnsunkShips = new PlayerUnsunkShips();
     player2UnsunkShips = new PlayerUnsunkShips();
   }
 
-  public ControllerImpl(View view) {
+  public ControllerImpl2(View view) {
     this();
     this.view = view;
     getInputs();
     setUpPlayers();
   }
 
-  public ControllerImpl(View view, Player player1, Player player2,
-                        Map<ShipType, Integer> specifications, int height, int width,
-                        PlayerUnsunkShips playerUnsunkShips1,
-                        PlayerUnsunkShips playerUnsunkShips2, Board playerBoard, Board opponentBoard) {
+  public ControllerImpl2(View view, Player player1, Player player2,
+                         Map<ShipType, Integer> specifications, int height, int width,
+                         PlayerUnsunkShips playerUnsunkShips1,
+                         PlayerUnsunkShips playerUnsunkShips2, Board playerBoard, Board opponentBoard) {
 
     player1UnsunkShips = playerUnsunkShips1;
     player2UnsunkShips = playerUnsunkShips2;
@@ -63,7 +63,7 @@ public class ControllerImpl implements Controller {
     this.width = width;
   }
 
-  public ControllerImpl(View view, Integer seed) {
+  public ControllerImpl2(View view, Integer seed) {
     this(view);
     this.seed = seed;
     getInputs();
@@ -119,8 +119,8 @@ public class ControllerImpl implements Controller {
 
 
     while (true) {
-      view.showBoard("Opponent Board Data:", opponentBoard.getBoardArray());
-      view.showBoard("Your Board:", playerBoard.getBoardArray());
+//      view.showBoard("Opponent Board Data:", opponentBoard.getBoardArray());
+//      view.showBoard("Your Board:", playerBoard.getBoardArray());
 
       List<Coord> player1Shots = player1.takeShots();
       List<Coord> player2Shots = player2.takeShots();
@@ -161,6 +161,9 @@ public class ControllerImpl implements Controller {
   }
 
 
+  public int win() {
+    return win;
+  }
 
   private HeightWidth getHeightWidth() {
     String standardError = "Uh Oh! You've entered invalid dimensions.\n";
