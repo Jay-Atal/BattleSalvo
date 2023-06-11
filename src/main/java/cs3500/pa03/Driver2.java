@@ -4,6 +4,7 @@ import cs3500.pa03.controller.Controller;
 import cs3500.pa03.controller.ControllerImpl;
 import cs3500.pa03.controller.ControllerImpl2;
 import cs3500.pa03.model.AiMapPlayer;
+import cs3500.pa03.model.AiMapPlayer2;
 import cs3500.pa03.model.AiRandomPlayer;
 import cs3500.pa03.model.AiStackPlayer;
 import cs3500.pa03.model.Board;
@@ -95,10 +96,10 @@ public class Driver2 {
 //    }
 
     int wins = 0;
-    for(int i = 0; i < 100000; i++) {
+    for (int i = 0; i < 1; i++) {
       Random random = new Random();
-      int height = random.nextInt(6, 16);
-      int width = random.nextInt(6, 16);
+      int height;
+      int width;
 
       PlayerUnsunkShips playerUnsunkShips1 = new PlayerUnsunkShips();
       PlayerUnsunkShips playerUnsunkShips2 = new PlayerUnsunkShips();
@@ -109,8 +110,9 @@ public class Driver2 {
       height = randomSetup[1];
       Board playerBoard = new Board(height, width);
       Board opponentBoard = new Board(height, width);
-      Player player1 = new AiMapPlayer(playerBoard, opponentBoard, playerUnsunkShips1);
-      Player player2 = new AiStackPlayer(new Board(height, width), new Board(height, width), playerUnsunkShips2);
+      Player player1 = new AiMapPlayer2(playerBoard, opponentBoard, playerUnsunkShips1);
+      Player player2 =
+          new AiStackPlayer(new Board(height, width), new Board(height, width), playerUnsunkShips2);
       int shipUpper = Math.min(height, width) - 4;
       Map<ShipType, Integer> specifications = new HashMap<>();
 
@@ -129,9 +131,10 @@ public class Driver2 {
       //shipAmount = random.nextInt(shipUpper) + 1;
       specifications.put(ShipType.Submarine, randomSetup[5]);
 
-      controller = new ControllerImpl2(view, player1, player2, specifications, height, width, playerUnsunkShips1, playerUnsunkShips2, playerBoard, opponentBoard);
+      controller = new ControllerImpl2(view, player1, player2, specifications, height, width,
+          playerUnsunkShips1, playerUnsunkShips2, playerBoard, opponentBoard);
       controller.run();
-      wins+=controller.win();
+      wins += controller.win();
     }
 
 
@@ -140,7 +143,7 @@ public class Driver2 {
   }
 
   private static int[] generateRandomSetup() {
-    Random random= new Random();
+    Random random = new Random();
     int width = random.nextInt(6, 16);
     int height = random.nextInt(6, 16);
     int randomRange = Math.min(width, height) - 3;

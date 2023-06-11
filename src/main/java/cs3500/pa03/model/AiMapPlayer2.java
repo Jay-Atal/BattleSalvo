@@ -12,12 +12,13 @@ import java.util.Stack;
 /**
  * Representing the AI player for the game.
  */
-public class AiMapPlayer extends GenericPlayer {
+public class AiMapPlayer2 extends GenericPlayer {
 
   List<Coord> validMoves;
   List<Coord> usedMoves;
   Stack<Coord> hitCells;
   Map<Coord, Integer> heatMap = new HashMap<>();
+  List<Ship> shipsForFrequencies;
   int turn = 0;
   int shipAmount;
   int opponentShips;
@@ -31,8 +32,8 @@ public class AiMapPlayer extends GenericPlayer {
    * @param playerUnsunkShips the object for keeping track of unsunk ships.
    * @param seed              used for testing purposes to give consitanty "random" placements.
    */
-  public AiMapPlayer(Board playerBoard, Board opponentBoard, PlayerUnsunkShips playerUnsunkShips,
-                     Integer seed) {
+  public AiMapPlayer2(Board playerBoard, Board opponentBoard, PlayerUnsunkShips playerUnsunkShips,
+                      Integer seed) {
     super(playerBoard, opponentBoard, seed, playerUnsunkShips);
     validMoves = new ArrayList<>();
     usedMoves = new ArrayList<>();
@@ -51,14 +52,14 @@ public class AiMapPlayer extends GenericPlayer {
           for (Direction direction : Direction.values()) {
             ship = new Ship(shipType, current, direction);
             if (isValidSpot(ship, opponentBoard)) {
+              boolean containsHit = containsHit(ship);
               for (int i = 0; i < ship.shipType().getSize(); i++) {
                 Coord toIncrease = (ship.direction().equals(Direction.HORIZONTAL)) ?
                     new Coord(current.x() + i, current.y()) :
                     new Coord(current.x(), current.y() + i);
                 int currentFrequency = heatMap.getOrDefault(toIncrease, 0);
                 int increaseAmount =
-                    (opponentBoard.board[toIncrease.y()][toIncrease.x()].getCondition()
-                        .equals(Condition.HIT)) ? 25 : 1;
+                    (containsHit) ? 10 : 4;
                 heatMap.put(toIncrease, currentFrequency + increaseAmount);
               }
 
@@ -67,6 +68,19 @@ public class AiMapPlayer extends GenericPlayer {
         }
       }
     }
+  }
+
+  private boolean containsHit(Ship ship) {
+    Coord current = ship.coord();
+    for (int i = 0; i < ship.shipType().getSize(); i++) {
+      Coord checkHit = (ship.direction().equals(Direction.HORIZONTAL)) ?
+          new Coord(current.x() + i, current.y()) :
+          new Coord(current.x(), current.y() + i);
+      if(opponentBoard.board[checkHit.y()][checkHit.x()].getCondition().equals(Condition.HIT)) {
+        return true;
+      }
+    }
+    return false;
   }
 
 
@@ -93,7 +107,7 @@ public class AiMapPlayer extends GenericPlayer {
    * @param opponentBoard     the player's representation of the opponent's board.
    * @param playerUnsunkShips the object for keeping track of unsunk ships.
    */
-  public AiMapPlayer(Board playerBoard, Board opponentBoard, PlayerUnsunkShips playerUnsunkShips) {
+  public AiMapPlayer2(Board playerBoard, Board opponentBoard, PlayerUnsunkShips playerUnsunkShips) {
     super(playerBoard, opponentBoard, playerUnsunkShips);
     validMoves = new ArrayList<>();
     usedMoves = new ArrayList<>();
