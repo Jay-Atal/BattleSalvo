@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import cs3500.pa03.Mocket;
 import cs3500.pa03.json.JsonUtils;
 import cs3500.pa03.json.MessageJson;
@@ -13,6 +14,7 @@ import cs3500.pa03.model.AiStackPlayer;
 import cs3500.pa03.model.Board;
 import cs3500.pa03.model.Player;
 import cs3500.pa03.model.PlayerUnsunkShips;
+import cs3500.pa03.model.ShipType;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -57,10 +59,34 @@ public class ProxyControllerTest {
     assertEquals(expected, logToString());
   }
 
-
   @Test
-  public void test2() {
+  public void setupTest() {
+    ObjectNode mapper = new ObjectMapper().createObjectNode();
+    mapper.put("width", 6);
+    mapper.put("height", 6);
 
+    PlayerUnsunkShips playerUnsunkShips1 = new PlayerUnsunkShips();
+    Board playerBoard = new Board(6, 6);
+    Board opponentBoard = new Board(6, 6);
+    Player player = new AiStackPlayer(playerBoard, opponentBoard, playerUnsunkShips1, 0);
+    ObjectNode fleetSpec = new ObjectMapper().createObjectNode();
+    fleetSpec.put(ShipType.CARRIER.name(), 1);
+    fleetSpec.put(ShipType.BATTLESHIP.name(), 1);
+    fleetSpec.put(ShipType.DESTROYER.name(), 1);
+    fleetSpec.put(ShipType.SUBMARINE.name(), 1);
+    mapper.set("fleet-spec", fleetSpec);
+
+    MessageJson messageJson = new MessageJson("setup", mapper);
+    JsonNode message = JsonUtils.serializeRecord(messageJson);
+
+    Mocket socket = new Mocket(this.testLog, List.of(message.toString()));
+
+    ProxyController proxyController = new ProxyController(socket, player);
+
+    proxyController.run();
+
+    String expected = "";
+    assertEquals(expected, logToString());
   }
 
   /**

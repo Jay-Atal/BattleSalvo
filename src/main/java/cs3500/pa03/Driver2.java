@@ -1,11 +1,7 @@
 package cs3500.pa03;
 
-import cs3500.pa03.controller.Controller;
-import cs3500.pa03.controller.ControllerImpl;
 import cs3500.pa03.controller.ControllerImpl2;
-import cs3500.pa03.model.AiMapPlayer;
 import cs3500.pa03.model.AiMapPlayer2;
-import cs3500.pa03.model.AiRandomPlayer;
 import cs3500.pa03.model.AiStackPlayer;
 import cs3500.pa03.model.Board;
 import cs3500.pa03.model.Player;
@@ -117,19 +113,19 @@ public class Driver2 {
       Map<ShipType, Integer> specifications = new HashMap<>();
 
       //int shipAmount = random.nextInt(shipUpper) + 1;
-      specifications.put(ShipType.Carrier, randomSetup[2]);
+      specifications.put(ShipType.CARRIER, randomSetup[2]);
       //shipUpper = shipUpper - shipAmount;
 
       //shipAmount = random.nextInt(shipUpper) + 1;
-      specifications.put(ShipType.Battleship, randomSetup[3]);
+      specifications.put(ShipType.BATTLESHIP, randomSetup[3]);
       //shipUpper = shipUpper - shipAmount;
 
       //shipAmount = random.nextInt(shipUpper) + 1;
-      specifications.put(ShipType.Destroyer, randomSetup[4]);
+      specifications.put(ShipType.DESTROYER, randomSetup[4]);
       //shipUpper = shipUpper - shipAmount;
 
       //shipAmount = random.nextInt(shipUpper) + 1;
-      specifications.put(ShipType.Submarine, randomSetup[5]);
+      specifications.put(ShipType.SUBMARINE, randomSetup[5]);
 
       controller = new ControllerImpl2(view, player1, player2, specifications, height, width,
           playerUnsunkShips1, playerUnsunkShips2, playerBoard, opponentBoard);

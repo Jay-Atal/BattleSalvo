@@ -6,10 +6,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Represents a ship type.
  */
 public enum ShipType {
-  @JsonProperty("CARRIER") Carrier(6, 'C'),
-  @JsonProperty("BATTLESHIP") Battleship(5, 'B'),
-  @JsonProperty("DESTROYER") Destroyer(4, 'D'),
-  @JsonProperty("SUBMARINE") Submarine(3, 'S');
+  @JsonProperty("CARRIER") CARRIER(6, 'C'),
+  @JsonProperty("BATTLESHIP") BATTLESHIP(5, 'B'),
+  @JsonProperty("DESTROYER") DESTROYER(4, 'D'),
+  @JsonProperty("SUBMARINE") SUBMARINE(3, 'S');
 
   private final int size;
   private final char startLetter;

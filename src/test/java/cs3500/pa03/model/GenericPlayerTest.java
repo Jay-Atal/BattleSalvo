@@ -2,7 +2,6 @@ package cs3500.pa03.model;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,14 +26,14 @@ class PlayerTest {
     seed = 1;
     player = new AiStackPlayer(playerBoard, opponentBoard, playerUnsunkShips, seed);
     specifications = new HashMap<>();
-    specifications.put(ShipType.Carrier, 1);
-    specifications.put(ShipType.Battleship, 1);
-    specifications.put(ShipType.Destroyer, 1);
-    specifications.put(ShipType.Submarine, 1);
-    expectedPlayerShip.add(new Ship(ShipType.Carrier, new Coord(3, 0), Direction.VERTICAL));
-    expectedPlayerShip.add(new Ship(ShipType.Battleship, new Coord(2, 1), Direction.VERTICAL));
-    expectedPlayerShip.add(new Ship(ShipType.Destroyer, new Coord(0, 0), Direction.VERTICAL));
-    expectedPlayerShip.add(new Ship(ShipType.Submarine, new Coord(1, 2), Direction.VERTICAL));
+    specifications.put(ShipType.CARRIER, 1);
+    specifications.put(ShipType.BATTLESHIP, 1);
+    specifications.put(ShipType.DESTROYER, 1);
+    specifications.put(ShipType.SUBMARINE, 1);
+    expectedPlayerShip.add(new Ship(ShipType.CARRIER, new Coord(3, 0), Direction.VERTICAL));
+    expectedPlayerShip.add(new Ship(ShipType.BATTLESHIP, new Coord(2, 1), Direction.VERTICAL));
+    expectedPlayerShip.add(new Ship(ShipType.DESTROYER, new Coord(0, 0), Direction.VERTICAL));
+    expectedPlayerShip.add(new Ship(ShipType.SUBMARINE, new Coord(1, 2), Direction.VERTICAL));
   }
 
   @Test

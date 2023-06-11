@@ -88,7 +88,7 @@ public class ProxyController implements Controller {
   }
 
   public void join() {
-    Record joinJson = new JoinJson("Jay-Atal", "SINGLE");
+    Record joinJson = new JoinJson("WalkDoge", "SINGLE");
     sentToServer("join", joinJson);
   }
 

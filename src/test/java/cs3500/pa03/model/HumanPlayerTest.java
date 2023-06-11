@@ -27,10 +27,10 @@ class HumanPlayerTest {
     opponentBoard = new Board(6, 6);
     humanPlayer = new HumanPlayer(playerBoard, opponentBoard, view, playerUnsunkShips, seed);
     HashMap<ShipType, Integer> specifications = new HashMap<>();
-    specifications.put(ShipType.Carrier, 1);
-    specifications.put(ShipType.Battleship, 1);
-    specifications.put(ShipType.Destroyer, 1);
-    specifications.put(ShipType.Submarine, 1);
+    specifications.put(ShipType.CARRIER, 1);
+    specifications.put(ShipType.BATTLESHIP, 1);
+    specifications.put(ShipType.DESTROYER, 1);
+    specifications.put(ShipType.SUBMARINE, 1);
 
     humanPlayer.setup(6, 6, specifications);
   }
