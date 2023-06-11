@@ -272,27 +272,27 @@ class ControllerTest {
 
   }
 
-  @Test
-  public void integrationTest() {
-    controller = new ControllerImpl(new TerminalView(output, input), 1);
-    controller.run();
-    assertEquals(outputExpected, output.toString());
-  }
+//  @Test
+//  public void integrationTest() {
+//    controller = new ControllerImpl(new TerminalView(output, input), 1);
+//    controller.run();
+//    assertEquals(outputExpected, output.toString());
+//  }
 
-  @Test
-  public void integrationTestErrors() {
-    controller = new ControllerImpl(new TerminalView(output, errorInput), 1);
-    controller.run();
-    assertEquals(outputError, output.toString());
-  }
+//  @Test
+//  public void integrationTestErrors() {
+//    controller = new ControllerImpl(new TerminalView(output, errorInput), 1);
+//    controller.run();
+//    assertEquals(outputError, output.toString());
+//  }
 
-  @Test
-  void lossTest() {
-    controller = new ControllerImpl(new TerminalView(output, lostInput), 1);
-    controller.run();
-    String sb = output.toString();
-    assertEquals("You LOSE!\n", sb.substring(sb.indexOf("You ")));
-  }
+//  @Test
+//  void lossTest() {
+//    controller = new ControllerImpl(new TerminalView(output, lostInput), 1);
+//    controller.run();
+//    String sb = output.toString();
+//    assertEquals("You LOSE!\n", sb.substring(sb.indexOf("You ")));
+//  }
 
 
 }

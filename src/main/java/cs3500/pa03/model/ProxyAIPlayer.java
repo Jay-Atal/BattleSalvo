@@ -3,7 +3,7 @@ package cs3500.pa03.model;
 import java.util.List;
 import java.util.Map;
 
-public class ProxyAIPlayer extends AiPlayer{
+public class ProxyAIPlayer extends AiRandomPlayer {
   /**
    * Creates a new AiPlayer.
    *

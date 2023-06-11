@@ -3,9 +3,7 @@ package cs3500.pa03;
 import cs3500.pa03.controller.Controller;
 import cs3500.pa03.controller.ControllerImpl;
 import cs3500.pa03.controller.ProxyController;
-import cs3500.pa03.model.AiPlayer;
-import cs3500.pa03.model.AiPlayer2;
-import cs3500.pa03.model.AiPlayer3;
+import cs3500.pa03.model.AiStackPlayer;
 import cs3500.pa03.model.Board;
 import cs3500.pa03.model.Player;
 import cs3500.pa03.model.PlayerUnsunkShips;
@@ -27,7 +25,7 @@ public class Driver {
     View view = new TerminalView(System.out);
     Controller controller = null;
 
-    if(args.length == 0) {
+    if (args.length == 0) {
       controller = new ControllerImpl(view);
     } else if (args.length == 2) {
 
@@ -42,24 +40,19 @@ public class Driver {
       }
       Socket socket = null;
       try {
-         socket = new Socket(host, port);
+        socket = new Socket(host, port);
       } catch (IOException e) {
         view.showError("There was an issue with generating a socket.");
         throw new RuntimeException(e);
         //System.exit(1);
       }
-      Player player = new AiPlayer3(new Board() ,new Board(), new PlayerUnsunkShips());
+      Player player = new AiStackPlayer(new Board(), new Board(), new PlayerUnsunkShips());
       controller = new ProxyController(socket, player);
 
-    } else  {
+    } else {
       view.showError("There was an issue with the command line arguments.\n Try Again!");
       System.exit(1);
     }
-
-    for(int i = 0; i < 1000; i++) {
       controller.run();
-    }
-    System.out.println(controller.win());
-
   }
 }

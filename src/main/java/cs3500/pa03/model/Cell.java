@@ -16,10 +16,12 @@ public class Cell {
   private HashMap<Condition, Character> charLookup = new HashMap<>();
 
   private void setUpTable() {
+//    charLookup.put(Condition.HIT, 'H');
+//    charLookup.put(Condition.MISS, 'M');
+//    charLookup.put(Condition.WATER, '0');
     charLookup.put(Condition.HIT, 'H');
-    charLookup.put(Condition.MISS, 'M');
-    charLookup.put(Condition.WATER, '0');
-
+    charLookup.put(Condition.MISS, '+');
+    charLookup.put(Condition.WATER, '`');
     //default ship but overridden in the constructor.
     charLookup.put(Condition.SHIP, '_');
   }

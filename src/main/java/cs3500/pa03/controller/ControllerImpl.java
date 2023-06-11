@@ -1,6 +1,6 @@
 package cs3500.pa03.controller;
 
-import cs3500.pa03.model.AiPlayer;
+import cs3500.pa03.model.AiRandomPlayer;
 import cs3500.pa03.model.Board;
 import cs3500.pa03.model.Coord;
 import cs3500.pa03.model.GameResult;
@@ -12,36 +12,65 @@ import cs3500.pa03.model.ShipType;
 import cs3500.pa03.view.View;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 /**
  * The implementation of the Battle Salvo Controller.
  */
 public class ControllerImpl implements Controller {
-  private final View view;
+  private View view;
   private int height;
   private int width;
 
-  private HashMap<ShipType, Integer> specifications;
+  private Map<ShipType, Integer> specifications;
   private Board playerBoard;
   private Board opponentBoard;
 
   private Integer seed;
   private final PlayerUnsunkShips player1UnsunkShips;
   private final PlayerUnsunkShips player2UnsunkShips;
-  private Player player1;
-  private Player player2;
+  private Player player1 = null;
+  private Player player2 = null;
+  private int win = 0;
 
-  public ControllerImpl(View view) {
-    this.view = view;
+  private ControllerImpl() {
     player1UnsunkShips = new PlayerUnsunkShips();
     player2UnsunkShips = new PlayerUnsunkShips();
+  }
+
+  public ControllerImpl(View view) {
+    this();
+    this.view = view;
+    getInputs();
+    setUpPlayers();
+  }
+
+  public ControllerImpl(View view, Player player1, Player player2,
+                        Map<ShipType, Integer> specifications, int height, int width,
+                        PlayerUnsunkShips playerUnsunkShips1,
+                        PlayerUnsunkShips playerUnsunkShips2, Board playerBoard, Board opponentBoard) {
+
+    player1UnsunkShips = playerUnsunkShips1;
+    player2UnsunkShips = playerUnsunkShips2;
+    this.playerBoard = playerBoard;
+    this.opponentBoard = opponentBoard;
+    this.view = view;
+    this.player1 = player1;
+    this.player2 = player2;
+    this.specifications = specifications;
+    this.height = height;
+    this.width = width;
   }
 
   public ControllerImpl(View view, Integer seed) {
     this(view);
     this.seed = seed;
+    getInputs();
+    setUpPlayers();
   }
+
+
 
   /**
    * Getting all the inputs from the user.
@@ -69,26 +98,25 @@ public class ControllerImpl implements Controller {
   }
 
   public void setUpPlayers() {
-
     if (seed != null) {
       player1 = new HumanPlayer(playerBoard, opponentBoard, view, player1UnsunkShips, seed);
       player2 =
-          new AiPlayer(new Board(height, width), new Board(height, width), player2UnsunkShips,
+          new AiRandomPlayer(new Board(height, width), new Board(height, width), player2UnsunkShips,
               (seed + 1));
     } else {
       player1 = new HumanPlayer(playerBoard, opponentBoard, view, player1UnsunkShips);
       player2 =
-          new AiPlayer(new Board(height, width), new Board(height, width), player2UnsunkShips);
+          new AiRandomPlayer(new Board(height, width), new Board(height, width), player2UnsunkShips);
     }
   }
 
   @Override
   public void run() {
-    getInputs();
-    setUpPlayers();
+
 
     player1.setup(height, width, specifications);
     player2.setup(height, width, specifications);
+
 
     while (true) {
       view.showBoard("Opponent Board Data:", opponentBoard.getBoardArray());
@@ -97,8 +125,11 @@ public class ControllerImpl implements Controller {
       List<Coord> player1Shots = player1.takeShots();
       List<Coord> player2Shots = player2.takeShots();
 
+
+
       List<Coord> play1SuccessfulHits = player2.reportDamage(player1Shots);
       List<Coord> play2SuccessfulHits = player1.reportDamage(player2Shots);
+
 
       player1.successfulHits(play1SuccessfulHits);
       player2.successfulHits(play2SuccessfulHits);
@@ -115,6 +146,7 @@ public class ControllerImpl implements Controller {
           view.showResult(GameResult.LOSE);
         } else {
           view.showResult(GameResult.WIN);
+          win++;
         }
         break;
       }
@@ -122,12 +154,15 @@ public class ControllerImpl implements Controller {
 
     }
 
+    player1.takeShots();
+    player2.takeShots();
+
 
   }
 
   @Override
   public int win() {
-    return 0;
+    return win;
   }
 
   private HeightWidth getHeightWidth() {
