@@ -2,6 +2,7 @@ package cs3500.pa03.model;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +31,7 @@ class PlayerTest {
     specifications.put(ShipType.BATTLESHIP, 1);
     specifications.put(ShipType.DESTROYER, 1);
     specifications.put(ShipType.SUBMARINE, 1);
+    expectedPlayerShip = new ArrayList<>();
     expectedPlayerShip.add(new Ship(ShipType.CARRIER, new Coord(3, 0), Direction.VERTICAL));
     expectedPlayerShip.add(new Ship(ShipType.BATTLESHIP, new Coord(2, 1), Direction.VERTICAL));
     expectedPlayerShip.add(new Ship(ShipType.DESTROYER, new Coord(0, 0), Direction.VERTICAL));
@@ -44,7 +46,13 @@ class PlayerTest {
 
   @Test
   void takeShots() {
-
+    player.setup(6, 6, specifications);
+    List<Coord> expectedShots = new ArrayList<>();
+    expectedShots.add(new Coord(3,5));
+    expectedShots.add(new Coord(0,3));
+    expectedShots.add(new Coord(4,4));
+    expectedShots.add(new Coord(2,5));
+    assertEquals(expectedShots, player.takeShots());
   }
 
   @Test

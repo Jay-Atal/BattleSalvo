@@ -1,6 +1,6 @@
 package cs3500.pa03.controller;
 
-import cs3500.pa03.model.AiRandomPlayer;
+import cs3500.pa03.model.AiStackPlayer;
 import cs3500.pa03.model.Board;
 import cs3500.pa03.model.Coord;
 import cs3500.pa03.model.GameResult;
@@ -101,12 +101,12 @@ public class ControllerImpl implements Controller {
     if (seed != null) {
       player1 = new HumanPlayer(playerBoard, opponentBoard, view, player1UnsunkShips, seed);
       player2 =
-          new AiRandomPlayer(new Board(height, width), new Board(height, width), player2UnsunkShips,
+          new AiStackPlayer(new Board(height, width), new Board(height, width), player2UnsunkShips,
               (seed + 1));
     } else {
       player1 = new HumanPlayer(playerBoard, opponentBoard, view, player1UnsunkShips);
       player2 =
-          new AiRandomPlayer(new Board(height, width), new Board(height, width), player2UnsunkShips);
+          new AiStackPlayer(new Board(height, width), new Board(height, width), player2UnsunkShips);
     }
   }
 
