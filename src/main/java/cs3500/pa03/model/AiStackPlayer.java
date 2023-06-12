@@ -127,9 +127,6 @@ public class AiStackPlayer extends GenericPlayer {
   public List<Coord> takeShots() {
     updateShips();
     List<Coord> shots = new ArrayList<>();
-//    View view = new TerminalView(System.out);
-//    view.showBoard("3 Player:", playerBoard.getBoardArray());
-//    view.showBoard("3 Opponent:", opponentBoard.getBoardArray());
 
     for (int i = 0; i < ships.size(); i++) {
       if (hitCells.size() > 0) {
@@ -142,7 +139,7 @@ public class AiStackPlayer extends GenericPlayer {
 
         if (shots.size() == ships.size()) {
           usedMoves.addAll(shots);
-          return shots;
+          return updateShotBoard( shots);
         }
 
         for (int j = 0; j < 4; j++) {
@@ -153,7 +150,7 @@ public class AiStackPlayer extends GenericPlayer {
           if (shots.size() == ships.size()) {
             hitCells.push(current);
             usedMoves.addAll(shots);
-            return shots;
+            return updateShotBoard( shots);
           }
         }
 
@@ -164,7 +161,7 @@ public class AiStackPlayer extends GenericPlayer {
     int shotsSize = shots.size();
     for (int i = 0; i < ships.size() - shotsSize; i++) {
       if(validMoves.size() == 0) {
-        return shots;
+        return updateShotBoard( shots);
       }
       int randomIndex = random.nextInt(0, validMoves.size());
       shots.add(validMoves.remove(randomIndex));
@@ -180,6 +177,18 @@ public class AiStackPlayer extends GenericPlayer {
     unsunkShips.clear();
     unsunkShips.addAll(ships);
     usedMoves.addAll(shots);
+    return updateShotBoard( shots);
+  }
+
+  private List<Coord> updateShotBoard(List<Coord> shots) {
+
+    for (int i = 0; i < shots.size(); i++) {
+      Coord shot = shots.get(i);
+      System.out.println(shot);
+      opponentBoard.board[shot.y()][shot.x()] = new Cell(shot, Condition.MISS);
+    }
+    usedMoves.addAll(shots);
+    usedMoves.removeAll(shots);
     return shots;
   }
 }

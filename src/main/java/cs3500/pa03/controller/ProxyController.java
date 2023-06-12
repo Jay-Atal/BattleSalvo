@@ -69,7 +69,6 @@ public class ProxyController implements Controller {
       JsonParser parser = this.mapper.getFactory().createParser(this.in);
       while (!this.server.isClosed()) {
         MessageJson message = parser.readValueAs(MessageJson.class);
-        //System.out.println(message);
         delegateMessage(message);
       }
     } catch (IOException e) {
@@ -82,7 +81,6 @@ public class ProxyController implements Controller {
     JsonNode arguments = JsonUtils.serializeRecord(record);
     MessageJson response = new MessageJson(methodName, arguments);
     JsonNode toPrint = JsonUtils.serializeRecord(response);
-    //System.out.println("Response: " + toPrint);
     out.println(toPrint);
   }
 

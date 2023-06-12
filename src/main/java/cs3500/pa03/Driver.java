@@ -46,7 +46,7 @@ public class Driver {
         throw new RuntimeException(e);
         //System.exit(1);
       }
-      Player player = new AiStackPlayer(new Board(), new Board(), new PlayerUnsunkShips());
+      Player player = new AiStackPlayer(new Board(), new Board(), new PlayerUnsunkShips(), 1);
       controller = new ProxyController(socket, player);
 
     } else {

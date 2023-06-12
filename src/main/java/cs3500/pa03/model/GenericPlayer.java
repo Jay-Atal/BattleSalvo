@@ -67,7 +67,6 @@ public abstract class GenericPlayer implements Player {
     }
 
     ships = placeShips(shipTypes);
-    System.out.println(ships.size());
     unsunkShips.addAll(ships);
     return ships;
   }
@@ -266,20 +265,6 @@ public abstract class GenericPlayer implements Player {
    */
   @Override
   public void successfulHits(List<Coord> shotsThatHitOpponentShips) {
-//    for (Coord shot : shotsThatHitOpponentShips) {
-//      opponentBoard.board[shot.y()][shot.x()] = new Cell(shot, Condition.HIT);
-//    }
-//    for (Coord prevShot : lastShots) {
-//      if (!shotsThatHitOpponentShips.contains(prevShot)) {
-//        opponentBoard.board[prevShot.y()][prevShot.x()] = new Cell(prevShot, Condition.MISS);
-//      }
-//    }
-//    System.out.println(lastShots);
-//    for (Coord shot : lastShots) {
-//      boolean isValidShot = shotsThatHitOpponentShips.contains(shot);
-//      opponentBoard.board[shot.y()][shot.x()] =
-//          new Cell(shot, (isValidShot) ? Condition.HIT : Condition.MISS);
-//    }
     for (Coord shot : shotsThatHitOpponentShips) {
       opponentBoard.board[shot.y()][shot.x()] = new Cell(shot, Condition.HIT);
     }
