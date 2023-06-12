@@ -1,9 +1,7 @@
 package cs3500.pa03.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -18,7 +16,6 @@ import cs3500.pa03.model.Player;
 import cs3500.pa03.model.PlayerUnsunkShips;
 import cs3500.pa03.model.ShipType;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -122,7 +119,6 @@ public class ProxyControllerTest {
 
   @Test
   public void reportDamageTest() {
-    ObjectNode mapper = new ObjectMapper().createObjectNode();
     List<Coord> shots = new ArrayList<>();
     shots.addAll(List.of(new Coord(0, 0), new Coord(1, 1), new Coord(2, 2)));
     VolleyJSON volley = new VolleyJSON(shots);
@@ -152,6 +148,58 @@ public class ProxyControllerTest {
     assertEquals(expected, logToString());
   }
 
+  @Test
+  public void successfulHitsTest() {
+    List<Coord> shots = new ArrayList<>();
+    shots.addAll(List.of(new Coord(0, 0), new Coord(1, 1), new Coord(2, 2)));
+    VolleyJSON volley = new VolleyJSON(shots);
+
+    MessageJson messageJson =
+        new MessageJson("successful-hits", JsonUtils.serializeRecord(volley));
+    JsonNode message = JsonUtils.serializeRecord(messageJson);
+    Mocket socket = new Mocket(this.testLog, List.of(message.toString()));
+
+    PlayerUnsunkShips playerUnsunkShips1 = new PlayerUnsunkShips();
+    Board playerBoard = new Board(6, 6);
+    Board opponentBoard = new Board(6, 6);
+    Player player = new AiStackPlayer(playerBoard, opponentBoard, playerUnsunkShips1, 0);
+
+    HashMap<ShipType, Integer> specifications = new HashMap();
+    specifications.put(ShipType.CARRIER, 1);
+    specifications.put(ShipType.BATTLESHIP, 1);
+    specifications.put(ShipType.DESTROYER, 1);
+    specifications.put(ShipType.SUBMARINE, 1);
+    player.setup(6,6, specifications);
+
+    ProxyController proxyController = new ProxyController(socket, player);
+    proxyController.run();
+
+    String expected = "{\"method-name\":\"successful-hits\",\"arguments\":{}}\n";
+    assertEquals(expected, logToString());
+  }
+
+  @Test
+  public void endGameTest() {
+    ObjectNode mapper = new ObjectMapper().createObjectNode();
+    mapper.put("result", "WIN");
+    mapper.put("reason", "Player 1 sank all of Player 2's ships");
+
+    PlayerUnsunkShips playerUnsunkShips1 = new PlayerUnsunkShips();
+    Board playerBoard = new Board(6, 6);
+    Board opponentBoard = new Board(6, 6);
+    Player player = new AiStackPlayer(playerBoard, opponentBoard, playerUnsunkShips1, 0);
+
+    MessageJson messageJson = new MessageJson("end-game", mapper);
+    JsonNode message = JsonUtils.serializeRecord(messageJson);
+
+    Mocket socket = new Mocket(this.testLog, List.of(message.toString()));
+    ProxyController proxyController = new ProxyController(socket, player);
+    proxyController.run();
+
+    String expected = "{\"method-name\":\"end-game\",\"arguments\":{}}\n";
+    assertEquals(expected, logToString());
+  }
+
   /**
    * Converts the ByteArrayOutputStream log to a string in UTF_8 format
    *
@@ -159,20 +207,5 @@ public class ProxyControllerTest {
    */
   private String logToString() {
     return testLog.toString(StandardCharsets.UTF_8);
-  }
-
-  /**
-   * Try converting the current test log to a string of a certain class.
-   *
-   * @param classRef Type to try converting the current test stream to.
-   * @param <T>      Type to try converting the current test stream to.
-   */
-  private <T> void responseToClass(@SuppressWarnings("SameParameterValue") Class<T> classRef) {
-    try {
-      JsonParser jsonParser = new ObjectMapper().createParser(logToString());
-      jsonParser.readValueAs(classRef);
-    } catch (IOException e) {
-      fail();
-    }
   }
 }
