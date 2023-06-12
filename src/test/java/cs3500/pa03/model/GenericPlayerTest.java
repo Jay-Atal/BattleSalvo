@@ -9,12 +9,12 @@ import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class PlayerTest {
+class AiStackPlayerTest {
   Board playerBoard;
   Board opponentBoard;
   PlayerUnsunkShips playerUnsunkShips;
   Integer seed;
-  Player player;
+  AiStackPlayer player;
   Map<ShipType, Integer> specifications;
 
   List<Ship> expectedPlayerShip;
@@ -57,17 +57,38 @@ class PlayerTest {
 
   @Test
   void reportDamage() {
+    player.setup(6, 6, specifications);
+    player.takeShots();
+    List<Coord> fakeShots = new ArrayList<>();
+
+    fakeShots.add(new Coord(3, 1));
+    fakeShots.add(new Coord(5, 2));
+    fakeShots.add(new Coord(1, 2));
+    fakeShots.add(new Coord(2, 3));
+
+    List<Coord> expectedShots = new ArrayList<>();
+    expectedShots.add(new Coord(3, 1));
+    expectedShots.add(new Coord(1, 2));
+    expectedShots.add(new Coord(2, 3));
+
+    assertEquals(expectedShots, player.reportDamage(expectedShots));
   }
 
   @Test
   void successfulHits() {
-  }
+    player.setup(6, 6, specifications);
+    player.takeShots();
 
-  @Test
-  void endGame() {
-  }
+    List<Coord> expectedShots = new ArrayList<>();
+    expectedShots.add(new Coord(3, 1));
+    expectedShots.add(new Coord(1, 2));
+    expectedShots.add(new Coord(2, 3));
 
-  @Test
-  void updateShips() {
+    player.reportDamage(expectedShots);
+
+    player.successfulHits(expectedShots);
+    assertEquals(Condition.HIT, player.playerBoard.board[1][3].getCondition());
+    assertEquals(Condition.HIT, player.playerBoard.board[2][1].getCondition());
+    assertEquals(Condition.HIT, player.playerBoard.board[3][2].getCondition());
   }
 }
