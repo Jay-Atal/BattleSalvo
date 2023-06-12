@@ -22,6 +22,7 @@ import cs3500.pa03.json.MessageJson;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class ProxyController implements Controller {
 
@@ -56,7 +57,6 @@ public class ProxyController implements Controller {
       case "report-damage" -> reportDamage(arguments);
       case "successful-hits" -> successfulHits(arguments);
       case "end-game" -> endGame(arguments);
-      //TODO: Add Default
     }
   }
 
@@ -79,10 +79,14 @@ public class ProxyController implements Controller {
   }
 
   private void sentToServer(String methodName, Record record) {
-    JsonNode arguments = JsonUtils.serializeRecord(record);
-    MessageJson response = new MessageJson(methodName, arguments);
+    MessageJson response;
+    if (record == null) {
+      response = new MessageJson(methodName, new ObjectMapper().createObjectNode());
+    } else {
+      JsonNode arguments = JsonUtils.serializeRecord(record);
+      response = new MessageJson(methodName, arguments);
+    }
     JsonNode toPrint = JsonUtils.serializeRecord(response);
-    //System.out.println("Response: " + toPrint);
     out.println(toPrint);
   }
 
@@ -134,6 +138,7 @@ public class ProxyController implements Controller {
       wins++;
     }
     player.endGame(input.gameResult(), input.reason());
+    sentToServer("end-game", null);
   }
 //
 //  methodName=setup,arguments=
