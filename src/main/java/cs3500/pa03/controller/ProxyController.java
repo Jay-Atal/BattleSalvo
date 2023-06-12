@@ -75,7 +75,6 @@ public class ProxyController implements Controller {
     } catch (IOException e) {
       // Disconnected from server or parsing exception
       // TODO??
-      e.printStackTrace();
     }
   }
 
@@ -88,7 +87,7 @@ public class ProxyController implements Controller {
   }
 
   public void join() {
-    Record joinJson = new JoinJson("WalkDoge", "SINGLE");
+    Record joinJson = new JoinJson("Jay-Atal", "SINGLE");
     sentToServer("join", joinJson);
   }
 
