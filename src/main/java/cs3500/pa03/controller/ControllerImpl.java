@@ -39,6 +39,11 @@ public class ControllerImpl implements Controller {
     player2UnsunkShips = new PlayerUnsunkShips();
   }
 
+  /**
+   * Constructs a Controller with a view.
+   *
+   * @param view the view for output.
+   */
   public ControllerImpl(View view) {
     this();
     this.view = view;
@@ -46,37 +51,25 @@ public class ControllerImpl implements Controller {
     setUpPlayers();
   }
 
-  public ControllerImpl(View view, Player player1, Player player2,
-                        Map<ShipType, Integer> specifications, int height, int width,
-                        PlayerUnsunkShips playerUnsunkShips1,
-                        PlayerUnsunkShips playerUnsunkShips2, Board playerBoard, Board opponentBoard) {
-
-    player1UnsunkShips = playerUnsunkShips1;
-    player2UnsunkShips = playerUnsunkShips2;
-    this.playerBoard = playerBoard;
-    this.opponentBoard = opponentBoard;
-    this.view = view;
-    this.player1 = player1;
-    this.player2 = player2;
-    this.specifications = specifications;
-    this.height = height;
-    this.width = width;
-  }
-
+  /**
+   * Constructs a controller with a view and seed.
+   *
+   * @param view the view for output.
+   * @param seed the seed for random object in controller.
+   */
   public ControllerImpl(View view, Integer seed) {
-    this(view);
+    this();
+    this.view = view;
     this.seed = seed;
     getInputs();
     setUpPlayers();
   }
 
 
-
   /**
    * Getting all the inputs from the user.
    */
-  public void getInputs() {
-
+  private void getInputs() {
     view.welcomeUser("Hello! Welcome to the OOD BattleSalvo Game!");
     view.promptHeightWidth("Please enter a valid height and width below:");
     view.line();
@@ -97,7 +90,7 @@ public class ControllerImpl implements Controller {
     this.specifications = getSpecifications();
   }
 
-  public void setUpPlayers() {
+  private void setUpPlayers() {
     if (seed != null) {
       player1 = new HumanPlayer(playerBoard, opponentBoard, view, player1UnsunkShips, seed);
       player2 =
@@ -124,7 +117,6 @@ public class ControllerImpl implements Controller {
 
       List<Coord> player1Shots = player1.takeShots();
       List<Coord> player2Shots = player2.takeShots();
-
 
 
       List<Coord> play1SuccessfulHits = player2.reportDamage(player1Shots);
@@ -154,12 +146,7 @@ public class ControllerImpl implements Controller {
 
     }
 
-    player1.takeShots();
-    player2.takeShots();
-
-
   }
-
 
 
   private HeightWidth getHeightWidth() {

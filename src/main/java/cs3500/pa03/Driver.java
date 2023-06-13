@@ -26,7 +26,7 @@ public class Driver {
     Controller controller = null;
 
     if (args.length == 0) {
-      controller = new ControllerImpl(view);
+      controller = new ControllerImpl(view, 1);
     } else if (args.length == 2) {
 
       String host = args[0];
@@ -46,13 +46,13 @@ public class Driver {
         throw new RuntimeException(e);
         //System.exit(1);
       }
-      Player player = new AiStackPlayer(new Board(), new Board(), new PlayerUnsunkShips(), 1);
+      Player player = new AiStackPlayer(new Board(), new Board(), new PlayerUnsunkShips());
       controller = new ProxyController(socket, player);
 
     } else {
       view.showError("There was an issue with the command line arguments.\n Try Again!");
       System.exit(1);
     }
-      controller.run();
+    controller.run();
   }
 }

@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Stack;
 
+
 /**
  * Represents a generic player for Battle Salvo.
  */
@@ -49,7 +50,7 @@ public abstract class GenericPlayer implements Player {
     this.opponentBoard = opponentBoard;
     this.unsunkShips = unsunkShips;
     this.seed = seed;
-    random = (seed == null) ? new Random() : new Random(seed);
+    random = new Random(seed);
   }
 
 
@@ -126,17 +127,6 @@ public abstract class GenericPlayer implements Player {
   }
 
   private void placeShip(Ship ship) {
-//    Coord coord = ship.coord();
-//    ShipType shipType = ship.shipType();
-//    Direction direction = ship.direction();
-//
-//    for (int i = 0; i < shipType.getSize(); i++) {
-//      if (direction.equals(Direction.HORIZONTAL)) {
-//        playerBoard.board[coord.y()][coord.x() + i] = new Cell(coord, ship);
-//      } else {
-//        playerBoard.board[coord.y() + i][coord.x()] = new Cell(coord, ship);
-//      }
-//    }
     placeShip(ship, playerBoard);
   }
 
@@ -158,16 +148,6 @@ public abstract class GenericPlayer implements Player {
 
   private void removeShip(Ship ship) {
     removeShip(ship, playerBoard);
-//    Direction direction = ship.direction();
-//    Coord coord = ship.coord();
-//    for (int i = 0; i < ship.shipType().getSize(); i++) {
-//      if (direction.equals(Direction.HORIZONTAL)) {
-//        playerBoard.board[coord.y()][i + coord.x()] = new Cell(coord, Condition.WATER);
-//      } else {
-//        playerBoard.board[i + coord.y()][coord.x()] = new Cell(coord, Condition.WATER);
-//      }
-//    }
-
   }
 
   protected void removeShip(Ship ship, Board board) {
@@ -186,25 +166,6 @@ public abstract class GenericPlayer implements Player {
 
   protected boolean isValidSpot(Ship ship) {
     return isValidSpot(ship, playerBoard);
-//    Coord coord = ship.coord();
-//    ShipType shipType = ship.shipType();
-//    Direction direction = ship.direction();
-//
-//    for (int i = 0; i < shipType.getSize(); i++) {
-//      Cell cell;
-//      try {
-//        cell =
-//            (direction.equals(Direction.HORIZONTAL)) ? playerBoard.board[coord.y()][coord.x() + i] :
-//                playerBoard.board[coord.y() + i][coord.x()];
-//      } catch (IndexOutOfBoundsException e) {
-//        return false;
-//      }
-//      Condition cellCondition = cell.getCondition();
-//      if (cellCondition.equals(Condition.SHIP)) {
-//        return false;
-//      }
-//    }
-//    return true;
   }
 
   protected boolean isValidSpot(Ship ship, Board board) {
@@ -223,8 +184,7 @@ public abstract class GenericPlayer implements Player {
         return false;
       }
       Condition cellCondition = cell.getCondition();
-      if (cellCondition.equals(
-          Condition.MISS) || cellCondition.equals(Condition.SHIP)) { //cellCondition.equals(Condition.HIT) previous condition
+      if (cellCondition.equals(Condition.MISS) || cellCondition.equals(Condition.SHIP)) {
         return false;
       }
     }
@@ -237,7 +197,7 @@ public abstract class GenericPlayer implements Player {
    *
    * @param opponentShotsOnBoard the opponent's shots on this player's board
    * @return a filtered list of the given shots that contain all locations of shots that hit a
-   * ship on this board.
+   *         ship on this board.
    */
   @Override
   public List<Coord> reportDamage(List<Coord> opponentShotsOnBoard) {

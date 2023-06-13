@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import cs3500.pa03.Mocket;
 import cs3500.pa03.json.JsonUtils;
 import cs3500.pa03.json.MessageJson;
-import cs3500.pa03.json.VolleyJSON;
+import cs3500.pa03.json.VolleyJson;
 import cs3500.pa03.model.AiStackPlayer;
 import cs3500.pa03.model.Board;
 import cs3500.pa03.model.Coord;
@@ -23,6 +23,9 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Testing class for the ProxyController.
+ */
 public class ProxyControllerTest {
   private ByteArrayOutputStream testLog;
 
@@ -65,10 +68,7 @@ public class ProxyControllerTest {
     mapper.put("width", 6);
     mapper.put("height", 6);
 
-    PlayerUnsunkShips playerUnsunkShips1 = new PlayerUnsunkShips();
-    Board playerBoard = new Board(6, 6);
-    Board opponentBoard = new Board(6, 6);
-    Player player = new AiStackPlayer(playerBoard, opponentBoard, playerUnsunkShips1, 0);
+
     ObjectNode fleetSpec = new ObjectMapper().createObjectNode();
     fleetSpec.put(ShipType.CARRIER.name(), 1);
     fleetSpec.put(ShipType.BATTLESHIP.name(), 1);
@@ -79,6 +79,10 @@ public class ProxyControllerTest {
     MessageJson messageJson = new MessageJson("setup", mapper);
     JsonNode message = JsonUtils.serializeRecord(messageJson);
 
+    Board playerBoard = new Board(6, 6);
+    Board opponentBoard = new Board(6, 6);
+    PlayerUnsunkShips playerUnsunkShips1 = new PlayerUnsunkShips();
+    Player player = new AiStackPlayer(playerBoard, opponentBoard, playerUnsunkShips1, 0);
     Mocket socket = new Mocket(this.testLog, List.of(message.toString()));
     ProxyController proxyController = new ProxyController(socket, player);
     proxyController.run();
@@ -92,23 +96,24 @@ public class ProxyControllerTest {
 
   @Test
   public void takeShotsTest() {
-    ObjectMapper mapper = new ObjectMapper();
-    MessageJson messageJson = new MessageJson("take-shots", mapper.createObjectNode());
-    JsonNode message = JsonUtils.serializeRecord(messageJson);
-    Mocket socket = new Mocket(this.testLog, List.of(message.toString()));
 
     PlayerUnsunkShips playerUnsunkShips1 = new PlayerUnsunkShips();
     Board playerBoard = new Board(6, 6);
     Board opponentBoard = new Board(6, 6);
-    Player player = new AiStackPlayer(playerBoard, opponentBoard, playerUnsunkShips1, 0);
+
 
     HashMap<ShipType, Integer> specifications = new HashMap();
     specifications.put(ShipType.CARRIER, 1);
     specifications.put(ShipType.BATTLESHIP, 1);
     specifications.put(ShipType.DESTROYER, 1);
     specifications.put(ShipType.SUBMARINE, 1);
-    player.setup(6,6, specifications);
+    Player player = new AiStackPlayer(playerBoard, opponentBoard, playerUnsunkShips1, 0);
+    player.setup(6, 6, specifications);
 
+    ObjectMapper mapper = new ObjectMapper();
+    MessageJson messageJson = new MessageJson("take-shots", mapper.createObjectNode());
+    JsonNode message = JsonUtils.serializeRecord(messageJson);
+    Mocket socket = new Mocket(this.testLog, List.of(message.toString()));
     ProxyController proxyController = new ProxyController(socket, player);
     proxyController.run();
 
@@ -121,25 +126,29 @@ public class ProxyControllerTest {
   public void reportDamageTest() {
     List<Coord> shots = new ArrayList<>();
     shots.addAll(List.of(new Coord(0, 0), new Coord(1, 1), new Coord(2, 2)));
-    VolleyJSON volley = new VolleyJSON(shots);
 
-    MessageJson messageJson =
-        new MessageJson("report-damage", JsonUtils.serializeRecord(volley));
-    JsonNode message = JsonUtils.serializeRecord(messageJson);
-    Mocket socket = new Mocket(this.testLog, List.of(message.toString()));
+
+
+
 
     PlayerUnsunkShips playerUnsunkShips1 = new PlayerUnsunkShips();
     Board playerBoard = new Board(6, 6);
     Board opponentBoard = new Board(6, 6);
-    Player player = new AiStackPlayer(playerBoard, opponentBoard, playerUnsunkShips1, 0);
+
 
     HashMap<ShipType, Integer> specifications = new HashMap();
     specifications.put(ShipType.CARRIER, 1);
     specifications.put(ShipType.BATTLESHIP, 1);
     specifications.put(ShipType.DESTROYER, 1);
     specifications.put(ShipType.SUBMARINE, 1);
-    player.setup(6,6, specifications);
+    Player player = new AiStackPlayer(playerBoard, opponentBoard, playerUnsunkShips1, 0);
+    player.setup(6, 6, specifications);
 
+    VolleyJson volley = new VolleyJson(shots);
+    MessageJson messageJson =
+        new MessageJson("report-damage", JsonUtils.serializeRecord(volley));
+    JsonNode message = JsonUtils.serializeRecord(messageJson);
+    Mocket socket = new Mocket(this.testLog, List.of(message.toString()));
     ProxyController proxyController = new ProxyController(socket, player);
     proxyController.run();
 
@@ -152,25 +161,27 @@ public class ProxyControllerTest {
   public void successfulHitsTest() {
     List<Coord> shots = new ArrayList<>();
     shots.addAll(List.of(new Coord(0, 0), new Coord(1, 1), new Coord(2, 2)));
-    VolleyJSON volley = new VolleyJSON(shots);
 
-    MessageJson messageJson =
-        new MessageJson("successful-hits", JsonUtils.serializeRecord(volley));
-    JsonNode message = JsonUtils.serializeRecord(messageJson);
-    Mocket socket = new Mocket(this.testLog, List.of(message.toString()));
 
-    PlayerUnsunkShips playerUnsunkShips1 = new PlayerUnsunkShips();
-    Board playerBoard = new Board(6, 6);
-    Board opponentBoard = new Board(6, 6);
-    Player player = new AiStackPlayer(playerBoard, opponentBoard, playerUnsunkShips1, 0);
+
 
     HashMap<ShipType, Integer> specifications = new HashMap();
     specifications.put(ShipType.CARRIER, 1);
     specifications.put(ShipType.BATTLESHIP, 1);
     specifications.put(ShipType.DESTROYER, 1);
     specifications.put(ShipType.SUBMARINE, 1);
-    player.setup(6,6, specifications);
+    PlayerUnsunkShips playerUnsunkShips1 = new PlayerUnsunkShips();
+    Board playerBoard = new Board(6, 6);
+    Board opponentBoard = new Board(6, 6);
+    Player player = new AiStackPlayer(playerBoard, opponentBoard, playerUnsunkShips1, 0);
+    player.setup(6, 6, specifications);
 
+    VolleyJson volley = new VolleyJson(shots);
+
+    MessageJson messageJson =
+        new MessageJson("successful-hits", JsonUtils.serializeRecord(volley));
+    JsonNode message = JsonUtils.serializeRecord(messageJson);
+    Mocket socket = new Mocket(this.testLog, List.of(message.toString()));
     ProxyController proxyController = new ProxyController(socket, player);
     proxyController.run();
 

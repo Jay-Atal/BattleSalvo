@@ -1,6 +1,6 @@
 package cs3500.pa03.model;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,10 +48,10 @@ class AiStackPlayerTest {
   void takeShots() {
     player.setup(6, 6, specifications);
     List<Coord> expectedShots = new ArrayList<>();
-    expectedShots.add(new Coord(3,5));
-    expectedShots.add(new Coord(0,3));
-    expectedShots.add(new Coord(4,4));
-    expectedShots.add(new Coord(2,5));
+    expectedShots.add(new Coord(3, 5));
+    expectedShots.add(new Coord(0, 3));
+    expectedShots.add(new Coord(4, 4));
+    expectedShots.add(new Coord(2, 5));
     assertEquals(expectedShots, player.takeShots());
   }
 

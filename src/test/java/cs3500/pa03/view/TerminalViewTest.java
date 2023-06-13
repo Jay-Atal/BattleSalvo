@@ -50,12 +50,11 @@ class TerminalViewTest {
 
   @Test
   void getFleetSelection() {
-    String prompt = """
-        Please enter your fleet in the order [Carrier, Battleship, Destroyer, Submarine].
-        Remember, your fleet may not exceed size""";
-    view.promptTakeShots(prompt);
-    assertEquals(prompt + "\n", output.toString());
-
+    String mock = new String("Test Input");
+    Readable input = new StringReader(mock);
+    view = new TerminalView(output, input);
+    String actual = view.getFleetSelection();
+    assertEquals(mock, actual);
   }
 
   @Test

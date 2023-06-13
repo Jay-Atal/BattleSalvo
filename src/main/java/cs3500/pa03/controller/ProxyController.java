@@ -6,10 +6,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import cs3500.pa03.json.EndGameRequestJson;
 import cs3500.pa03.json.FleetJson;
 import cs3500.pa03.json.JoinJson;
+import cs3500.pa03.json.JsonUtils;
+import cs3500.pa03.json.MessageJson;
 import cs3500.pa03.json.SetupRequestJson;
-import cs3500.pa03.json.ShipAdapterJSON;
-import cs3500.pa03.json.VolleyJSON;
-import cs3500.pa03.model.GameResult;
+import cs3500.pa03.json.ShipAdapterJson;
+import cs3500.pa03.json.VolleyJson;
 import cs3500.pa03.model.Player;
 import cs3500.pa03.model.Ship;
 import cs3500.pa03.model.ShipType;
@@ -17,13 +18,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.net.Socket;
-import cs3500.pa03.json.JsonUtils;
-import cs3500.pa03.json.MessageJson;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
+
+/**
+ * ProxyController controls the game against a server for a given player and socket.
+ */
 public class ProxyController implements Controller {
 
   private final Socket server;
@@ -33,8 +35,12 @@ public class ProxyController implements Controller {
   private InputStream in;
   private final ObjectMapper mapper = new ObjectMapper();
 
-  private int wins = 0;
-
+  /**
+   * Makes a ProxyController object.
+   *
+   * @param server the server where the address and port number are.
+   * @param player the player used to play against the server.
+   */
   public ProxyController(Socket server, Player player) {
     this.server = server;
     this.player = player;
@@ -47,7 +53,12 @@ public class ProxyController implements Controller {
     }
   }
 
-  public void delegateMessage(MessageJson message) {
+  /**
+   * Decodes the message and passes it to it's appropriate method.
+   *
+   * @param message the message that is decoded.
+   */
+  private void delegateMessage(MessageJson message) {
     String methodName = message.methodName();
     JsonNode arguments = message.arguments();
     switch (methodName) {
@@ -56,7 +67,7 @@ public class ProxyController implements Controller {
       case "take-shots" -> takeShots();
       case "report-damage" -> reportDamage(arguments);
       case "successful-hits" -> successfulHits(arguments);
-      case "end-game" -> endGame(arguments);
+      default -> endGame(arguments);
     }
   }
 
@@ -89,12 +100,13 @@ public class ProxyController implements Controller {
     out.println(toPrint);
   }
 
-  public void join() {
+
+  private void join() {
     Record joinJson = new JoinJson("Jay-Atal", "SINGLE");
     sentToServer("join", joinJson);
   }
 
-  public void setup(JsonNode arguments) {
+  private void setup(JsonNode arguments) {
     SetupRequestJson setupArgs = this.mapper.convertValue(arguments, SetupRequestJson.class);
 
     int height = setupArgs.height();
@@ -102,61 +114,38 @@ public class ProxyController implements Controller {
 
     Map<ShipType, Integer> specifications = setupArgs.specifications();
     List<Ship> shipsList = player.setup(height, width, specifications);
-    List<ShipAdapterJSON> shipAdapterJSONList = new ArrayList<>();
+    List<ShipAdapterJson> shipAdapterJsonList = new ArrayList<>();
 
     for (Ship ship : shipsList) {
-      ShipAdapterJSON shipAdapterJSON =
-          new ShipAdapterJSON(ship.coord(), ship.shipType().getSize(), ship.direction());
-      shipAdapterJSONList.add(shipAdapterJSON);
+      ShipAdapterJson shipAdapterJson =
+          new ShipAdapterJson(ship.coord(), ship.shipType().getSize(), ship.direction());
+      shipAdapterJsonList.add(shipAdapterJson);
     }
 
-    Record returnArgs = new FleetJson(shipAdapterJSONList);
+    Record returnArgs = new FleetJson(shipAdapterJsonList);
     sentToServer("setup", returnArgs);
   }
 
-  public void takeShots() {
-    VolleyJSON volleyJSON = new VolleyJSON(player.takeShots());
-    sentToServer("take-shots", volleyJSON);
+  private void takeShots() {
+    VolleyJson volleyJson = new VolleyJson(player.takeShots());
+    sentToServer("take-shots", volleyJson);
   }
 
-  public void reportDamage(JsonNode arguments) {
-    VolleyJSON input = this.mapper.convertValue(arguments, VolleyJSON.class);
-    VolleyJSON volleyJSON = new VolleyJSON(player.reportDamage(input.shots()));
-    sentToServer("report-damage", volleyJSON);
+  private void reportDamage(JsonNode arguments) {
+    VolleyJson input = this.mapper.convertValue(arguments, VolleyJson.class);
+    VolleyJson volleyJson = new VolleyJson(player.reportDamage(input.shots()));
+    sentToServer("report-damage", volleyJson);
   }
 
-  public void successfulHits(JsonNode arguments) {
-    VolleyJSON input = this.mapper.convertValue(arguments, VolleyJSON.class);
+  private void successfulHits(JsonNode arguments) {
+    VolleyJson input = this.mapper.convertValue(arguments, VolleyJson.class);
     player.successfulHits(input.shots());
     sentToServer("successful-hits", null);
   }
 
-  public void endGame(JsonNode arguments) {
+  private void endGame(JsonNode arguments) {
     EndGameRequestJson input = this.mapper.convertValue(arguments, EndGameRequestJson.class);
-    if(input.gameResult().equals(GameResult.WIN)) {
-      wins++;
-    }
     player.endGame(input.gameResult(), input.reason());
     sentToServer("end-game", null);
   }
-//
-//  methodName=setup,arguments=
-//  {
-//    "fleet":[{
-//    "shipType":"CARRIER", "coord":{
-//      "x":1, "y":1
-//    },"direction":"HORIZONTAL"
-//  },{
-//    "shipType":"BATTLESHIP", "coord":{
-//      "x":0, "y":0
-//    },"direction":"HORIZONTAL"
-//  },{
-//    "shipType":"DESTROYER", "coord":{
-//      "x":0, "y":2
-//    },"direction":"HORIZONTAL"
-//  },{
-//    "shipType":"SUBMARINE", "coord":{
-//      "x":0, "y":3
-//    },"direction":"HORIZONTAL"
-//  }
 }

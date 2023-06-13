@@ -1,4 +1,5 @@
 package cs3500.pa03;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;

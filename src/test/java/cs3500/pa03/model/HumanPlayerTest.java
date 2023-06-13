@@ -1,63 +1,107 @@
-//package cs3500.pa03.model;
-//
-//import static org.junit.jupiter.api.Assertions.assertEquals;
-//
-//import cs3500.pa03.view.TerminalView;
-//import cs3500.pa03.view.View;
-//import java.util.ArrayList;
-//import java.util.HashMap;
-//import java.util.List;
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
-//
-//class HumanPlayerTest {
-//  Player humanPlayer;
-//  Board opponentBoard;
-//  Board playerBoard;
-//  Integer seed;
-//
-//  View view;
-//  PlayerUnsunkShips playerUnsunkShips;
-//
-//  @BeforeEach
-//  void setup() {
-//    view = new TerminalView(System.out);
-//    seed = 1;
-//    playerBoard = new Board(6, 6);
-//    opponentBoard = new Board(6, 6);
-//    humanPlayer = new HumanPlayer(playerBoard, opponentBoard, view, playerUnsunkShips, seed);
-//    HashMap<ShipType, Integer> specifications = new HashMap<>();
-//    specifications.put(ShipType.CARRIER, 1);
-//    specifications.put(ShipType.BATTLESHIP, 1);
-//    specifications.put(ShipType.DESTROYER, 1);
-//    specifications.put(ShipType.SUBMARINE, 1);
-//
-//    humanPlayer.setup(6, 6, specifications);
-//  }
-//
-//  @Test
-//  void name() {
-//    assertEquals("Human Player", humanPlayer.name());
-//  }
-//
-//
-//  @Test
-//  void reportDamagePlusSuccessfulHits() {
-//    List<Coord> fakeShots = new ArrayList<>();
-//    fakeShots.add(new Coord(3, 2));
-//    fakeShots.add(new Coord(4, 2));
-//    fakeShots.add(new Coord(3, 5));
-//    fakeShots.add(new Coord(5, 2));
-//    fakeShots.add(new Coord(2, 5));
-//    fakeShots.add(new Coord(0, 4));
-//    fakeShots.add(new Coord(1, 4));
-//    List<Coord> reportDamageExpected = new ArrayList<>();
-//    reportDamageExpected.add(new Coord(3, 2));
-//    reportDamageExpected.add(new Coord(3, 5));
-//    reportDamageExpected.add(new Coord(2, 5));
-//    reportDamageExpected.add(new Coord(1, 4));
-//
-//    assertEquals(reportDamageExpected, humanPlayer.reportDamage(fakeShots));
-//  }
-//
-//}
+package cs3500.pa03.model;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import cs3500.pa03.view.TerminalView;
+import cs3500.pa03.view.View;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+class HumanPlayerTest {
+  Board playerBoard;
+  Board opponentBoard;
+  PlayerUnsunkShips playerUnsunkShips;
+  Integer seed;
+  HumanPlayer player;
+  Map<ShipType, Integer> specifications;
+
+  View view;
+  StringBuilder out;
+  StringReader inputReader;
+  String input = """
+        3 5
+        0 3
+        4 4
+        2 5
+        """;
+
+  List<Ship> expectedPlayerShip;
+
+  @BeforeEach
+  void setUp() {
+    playerBoard = new Board();
+    opponentBoard = new Board();
+    playerUnsunkShips = new PlayerUnsunkShips();
+    seed = 1;
+    out = new StringBuilder();
+    inputReader = new StringReader(input);
+    view = new TerminalView(out, inputReader);
+    player = new HumanPlayer(playerBoard, opponentBoard, view, playerUnsunkShips, seed);
+    specifications = new HashMap<>();
+    specifications.put(ShipType.CARRIER, 1);
+    specifications.put(ShipType.BATTLESHIP, 1);
+    specifications.put(ShipType.DESTROYER, 1);
+    specifications.put(ShipType.SUBMARINE, 1);
+    expectedPlayerShip = new ArrayList<>();
+    expectedPlayerShip.add(new Ship(ShipType.CARRIER, new Coord(3, 0), Direction.VERTICAL));
+    expectedPlayerShip.add(new Ship(ShipType.BATTLESHIP, new Coord(2, 1), Direction.VERTICAL));
+    expectedPlayerShip.add(new Ship(ShipType.DESTROYER, new Coord(0, 0), Direction.VERTICAL));
+    expectedPlayerShip.add(new Ship(ShipType.SUBMARINE, new Coord(1, 2), Direction.VERTICAL));
+  }
+
+  @Test
+  void setup() {
+    List<Ship> playerShips = player.setup(6, 6, specifications);
+    assertEquals(expectedPlayerShip, playerShips);
+  }
+
+
+  @Test
+  void takeShots() {
+    player.setup(6, 6, specifications);
+    List<Coord> expectedShots = new ArrayList<>();
+    expectedShots.add(new Coord(3, 5));
+    expectedShots.add(new Coord(0, 3));
+    expectedShots.add(new Coord(4, 4));
+    expectedShots.add(new Coord(2, 5));
+    assertEquals(expectedShots, player.takeShots());
+
+  }
+
+  @Test
+  void reportDamage() {
+    player.setup(6, 6, specifications);
+    player.takeShots();
+
+
+    List<Coord> expectedShots = new ArrayList<>();
+    expectedShots.add(new Coord(3, 1));
+    expectedShots.add(new Coord(1, 2));
+    expectedShots.add(new Coord(2, 3));
+
+    assertEquals(expectedShots, player.reportDamage(expectedShots));
+  }
+
+  @Test
+  void successfulHits() {
+    player.setup(6, 6, specifications);
+    player.takeShots();
+
+    List<Coord> expectedShots = new ArrayList<>();
+    expectedShots.add(new Coord(3, 1));
+    expectedShots.add(new Coord(1, 2));
+    expectedShots.add(new Coord(2, 3));
+
+    player.reportDamage(expectedShots);
+
+    player.successfulHits(expectedShots);
+    assertEquals(Condition.HIT, player.playerBoard.board[1][3].getCondition());
+    assertEquals(Condition.HIT, player.playerBoard.board[2][1].getCondition());
+    assertEquals(Condition.HIT, player.playerBoard.board[3][2].getCondition());
+  }
+}

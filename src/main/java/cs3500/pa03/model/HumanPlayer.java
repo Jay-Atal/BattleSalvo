@@ -81,17 +81,17 @@ public class HumanPlayer extends GenericPlayer {
     }
     lastShots = toReturnShots;
     updateShips();
-    return toReturnShots;
+    return updateShotBoard(toReturnShots);
   }
 
   private List<Coord> updateShotBoard(List<Coord> shots) {
 
     for (int i = 0; i < shots.size(); i++) {
       Coord shot = shots.get(i);
-      System.out.println(shot);
+      //System.out.println(shot);
       opponentBoard.board[shot.y()][shot.x()] = new Cell(shot, Condition.MISS);
     }
-    return updateShotBoard(shots);
+    return shots;
   }
 
 }

@@ -8,6 +8,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @param x position.
  * @param y position.
  */
-public record Coord(@JsonProperty("x") int x,@JsonProperty("y") int y) {
+public record Coord(@JsonProperty("x") int x, @JsonProperty("y") int y) {
 
 }
