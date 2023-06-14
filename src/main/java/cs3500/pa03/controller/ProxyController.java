@@ -32,7 +32,7 @@ public class ProxyController implements Controller {
   private final Player player;
 
   private final PrintStream out;
-  private InputStream in;
+  private final InputStream in;
   private final ObjectMapper mapper = new ObjectMapper();
 
   /**
@@ -82,8 +82,7 @@ public class ProxyController implements Controller {
         delegateMessage(message);
       }
     } catch (IOException e) {
-      // Disconnected from server or parsing exception
-      // TODO??
+      System.out.println("End of input.");
     }
   }
 
@@ -145,6 +144,11 @@ public class ProxyController implements Controller {
   private void endGame(JsonNode arguments) {
     EndGameRequestJson input = this.mapper.convertValue(arguments, EndGameRequestJson.class);
     player.endGame(input.gameResult(), input.reason());
+    try {
+      server.close();
+    } catch (IOException e) {
+      System.out.println("Failed to close server");
+    }
     sentToServer("end-game", null);
   }
 }

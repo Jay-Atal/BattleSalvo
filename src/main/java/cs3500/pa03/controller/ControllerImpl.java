@@ -105,11 +105,8 @@ public class ControllerImpl implements Controller {
 
   @Override
   public void run() {
-
-
     player1.setup(height, width, specifications);
     player2.setup(height, width, specifications);
-
 
     while (true) {
       view.showBoard("Opponent Board Data:", opponentBoard.getBoardArray());
@@ -118,10 +115,8 @@ public class ControllerImpl implements Controller {
       List<Coord> player1Shots = player1.takeShots();
       List<Coord> player2Shots = player2.takeShots();
 
-
       List<Coord> play1SuccessfulHits = player2.reportDamage(player1Shots);
       List<Coord> play2SuccessfulHits = player1.reportDamage(player2Shots);
-
 
       player1.successfulHits(play1SuccessfulHits);
       player2.successfulHits(play2SuccessfulHits);
@@ -142,10 +137,7 @@ public class ControllerImpl implements Controller {
         }
         break;
       }
-
-
     }
-
   }
 
 

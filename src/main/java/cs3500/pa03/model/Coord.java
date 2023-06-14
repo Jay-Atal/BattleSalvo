@@ -9,5 +9,4 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @param y position.
  */
 public record Coord(@JsonProperty("x") int x, @JsonProperty("y") int y) {
-
 }

@@ -7,5 +7,4 @@ package cs3500.pa03.controller;
  * @param width  the width (for the board(.
  */
 public record HeightWidth(int height, int width) {
-
 }

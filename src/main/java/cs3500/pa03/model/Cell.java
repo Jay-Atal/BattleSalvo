@@ -12,8 +12,8 @@ public class Cell {
     return condition;
   }
 
-  private Condition condition;
-  private HashMap<Condition, Character> charLookup = new HashMap<>();
+  private final Condition condition;
+  private final HashMap<Condition, Character> charLookup = new HashMap<>();
 
   private void setUpTable() {
     charLookup.put(Condition.HIT, 'H');

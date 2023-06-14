@@ -10,7 +10,6 @@ import java.util.List;
 public class HumanPlayer extends GenericPlayer {
   private final View view;
 
-
   public HumanPlayer(Board playerBoard, Board opponentBoard, View view,
                      PlayerUnsunkShips unsunkShips) {
     super(playerBoard, opponentBoard, unsunkShips);
@@ -88,7 +87,6 @@ public class HumanPlayer extends GenericPlayer {
 
     for (int i = 0; i < shots.size(); i++) {
       Coord shot = shots.get(i);
-      //System.out.println(shot);
       opponentBoard.board[shot.y()][shot.x()] = new Cell(shot, Condition.MISS);
     }
     return shots;

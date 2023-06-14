@@ -12,10 +12,9 @@ import java.util.Stack;
  */
 public class AiStackPlayer extends GenericPlayer {
 
-  List<Coord> validMoves;
-  List<Coord> usedMoves;
-  Stack<Coord> hitCells;
-
+  private final List<Coord> validMoves;
+  private final List<Coord> usedMoves;
+  private final Stack<Coord> hitCells;
 
   /**
    * Creates a new AiPlayer.
@@ -34,8 +33,6 @@ public class AiStackPlayer extends GenericPlayer {
 
 
   }
-
-  private List<Ship> possibleShipLocations = new ArrayList<>();
 
   private boolean isValidSpot(Coord coord) {
     return !usedMoves.contains(coord) && validMoves.contains(coord);
@@ -67,7 +64,6 @@ public class AiStackPlayer extends GenericPlayer {
     return toReturn;
   }
 
-
   /**
    * Get the player's name.
    *
@@ -77,7 +73,6 @@ public class AiStackPlayer extends GenericPlayer {
   public String name() {
     return "AI-Player";
   }
-
 
   /**
    * Shots that successfully hit the opponent from the take shots.
@@ -90,7 +85,6 @@ public class AiStackPlayer extends GenericPlayer {
       hitCells.push(shot);
     }
   }
-
 
   /**
    * Returns this player's shots on the opponent's board. The number of shots returned should
@@ -128,7 +122,6 @@ public class AiStackPlayer extends GenericPlayer {
             return updateShotBoard(shots);
           }
         }
-
       }
     }
 
@@ -156,7 +149,6 @@ public class AiStackPlayer extends GenericPlayer {
   }
 
   private List<Coord> updateShotBoard(List<Coord> shots) {
-
     for (int i = 0; i < shots.size(); i++) {
       Coord shot = shots.get(i);
       opponentBoard.board[shot.y()][shot.x()] = new Cell(shot, Condition.MISS);

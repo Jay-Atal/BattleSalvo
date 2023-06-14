@@ -7,7 +7,7 @@ import java.util.List;
  * Represents a object keeping track of the unsunk ships.
  */
 public class PlayerUnsunkShips {
-  List<Ship> shipList;
+  private final List<Ship> shipList;
 
   public PlayerUnsunkShips() {
     shipList = new ArrayList<>();

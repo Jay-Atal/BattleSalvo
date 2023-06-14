@@ -29,6 +29,7 @@ import org.junit.jupiter.api.Test;
 public class ProxyControllerTest {
   private ByteArrayOutputStream testLog;
 
+
   /**
    * Reset the test log before each test is run.
    */
@@ -68,7 +69,6 @@ public class ProxyControllerTest {
     mapper.put("width", 6);
     mapper.put("height", 6);
 
-
     ObjectNode fleetSpec = new ObjectMapper().createObjectNode();
     fleetSpec.put(ShipType.CARRIER.name(), 1);
     fleetSpec.put(ShipType.BATTLESHIP.name(), 1);
@@ -102,7 +102,7 @@ public class ProxyControllerTest {
     Board opponentBoard = new Board(6, 6);
 
 
-    HashMap<ShipType, Integer> specifications = new HashMap();
+    HashMap<ShipType, Integer> specifications = new HashMap<>();
     specifications.put(ShipType.CARRIER, 1);
     specifications.put(ShipType.BATTLESHIP, 1);
     specifications.put(ShipType.DESTROYER, 1);
@@ -124,17 +124,9 @@ public class ProxyControllerTest {
 
   @Test
   public void reportDamageTest() {
-    List<Coord> shots = new ArrayList<>();
-    shots.addAll(List.of(new Coord(0, 0), new Coord(1, 1), new Coord(2, 2)));
-
-
-
-
-
     PlayerUnsunkShips playerUnsunkShips1 = new PlayerUnsunkShips();
     Board playerBoard = new Board(6, 6);
     Board opponentBoard = new Board(6, 6);
-
 
     HashMap<ShipType, Integer> specifications = new HashMap();
     specifications.put(ShipType.CARRIER, 1);
@@ -143,6 +135,8 @@ public class ProxyControllerTest {
     specifications.put(ShipType.SUBMARINE, 1);
     Player player = new AiStackPlayer(playerBoard, opponentBoard, playerUnsunkShips1, 0);
     player.setup(6, 6, specifications);
+
+    List<Coord> shots = new ArrayList<>(List.of(new Coord(0, 0), new Coord(1, 1), new Coord(2, 2)));
 
     VolleyJson volley = new VolleyJson(shots);
     MessageJson messageJson =

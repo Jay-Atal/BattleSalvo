@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Stack;
 
-
 /**
  * Represents a generic player for Battle Salvo.
  */
@@ -52,7 +51,6 @@ public abstract class GenericPlayer implements Player {
     this.seed = seed;
     random = new Random(seed);
   }
-
 
   @Override
   public List<Ship> setup(int height, int width, Map<ShipType, Integer> specifications) {
@@ -116,7 +114,6 @@ public abstract class GenericPlayer implements Player {
     return placedShips.stream().toList();
   }
 
-
   protected Ship randomShip(ShipType shipType) {
     int x = random.nextInt(0, playerBoard.board.length);
     int y = random.nextInt(0, playerBoard.board[0].length);
@@ -145,7 +142,6 @@ public abstract class GenericPlayer implements Player {
 
   }
 
-
   private void removeShip(Ship ship) {
     removeShip(ship, playerBoard);
   }
@@ -161,7 +157,6 @@ public abstract class GenericPlayer implements Player {
         board.board[i + coord.y()][coord.x()] = new Cell(coord, Condition.WATER);
       }
     }
-
   }
 
   protected boolean isValidSpot(Ship ship) {
@@ -216,7 +211,6 @@ public abstract class GenericPlayer implements Player {
     return shotsHit;
   }
 
-
   /**
    * Reports to this player what shots in their previous volley returned from takeShots()
    * successfully hit an opponent's ship.
@@ -231,7 +225,6 @@ public abstract class GenericPlayer implements Player {
     updateShips();
   }
 
-
   /**
    * Notifies the player that the game is over.
    * Win, lose, and draw should all be supported
@@ -242,7 +235,6 @@ public abstract class GenericPlayer implements Player {
   @Override
   public void endGame(GameResult result, String reason) {
     //Not needed right now
-    return;
   }
 
   private boolean isSunk(Ship ship) {
