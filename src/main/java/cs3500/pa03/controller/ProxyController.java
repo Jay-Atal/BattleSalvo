@@ -49,7 +49,6 @@ public class ProxyController implements Controller {
       in = server.getInputStream();
     } catch (IOException e) {
       throw new RuntimeException(e);
-      //TODO: Add custom message or handle "gracefully"
     }
   }
 
